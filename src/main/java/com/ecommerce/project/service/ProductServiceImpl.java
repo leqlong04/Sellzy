@@ -10,8 +10,14 @@ import com.ecommerce.project.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -100,6 +106,45 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
         productRepository.delete(product);
         return modelMapper.map(product, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO updateProductImage(Long productId, MultipartFile image) throws IOException {
+        //lay product trong db
+        Product productFromDB = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        //upload anh len server
+        //lay ten file anh vua up
+        String path = "images/";
+        String fileName = uploadImage(path, image);
+        //update product
+        productFromDB.setImage(fileName);
+        //save updated product
+        Product updatedProduct = productRepository.save(productFromDB);
+        // return dto sau khi mapping product den dto
+        return  modelMapper.map(updatedProduct, ProductDTO.class);
+    }
+
+    private String uploadImage(String path, MultipartFile file) throws IOException {
+        //lay current file
+        String originalFileName = file.getOriginalFilename();
+        //tao ten file duy nhat
+        String randomId = UUID.randomUUID().toString();
+        //anh.jpg --> 1234.jpg
+        String fileName = randomId.concat(originalFileName
+                .substring(originalFileName.lastIndexOf('.')));
+        String filePath = path + File.separator + fileName; // paath + "/" + file name
+
+        //ktra neu path ton tai
+        File folder = new File(path);
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+        //upload to server
+        Files.copy(file.getInputStream(), Paths.get(filePath));
+        // return file name
+        return fileName;
     }
 
 }
