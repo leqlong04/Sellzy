@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# build output
+/dist
+/build
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +26,21 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# local env files
+.env
+.env.local
+.env.*.local
+
+# OS-specific
+.DS_Store
+*.swp
+
+# coverage / testing
+coverage/
+*.lcov
+
+# cache
+.cache/
+.parcel-cache/
+.vite/
