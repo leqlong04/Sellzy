@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = "addresses")
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
