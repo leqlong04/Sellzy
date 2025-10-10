@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import ProductViewModal from "./ProductViewModal";
+import truncateText from "../../utils/truncateText";
 
 const ProductCard = (
     {
@@ -25,7 +26,7 @@ const ProductCard = (
     }
 
     return (
-        <div className="max-w-[300px] mx-auto border rounded-lg shadow-xl overflow-hidden transition-transform hover:shadow-2xl duration-300">
+        <div className="rounded-lg shadow-xl overflow-hidden transition-shadow hover:shadow-2xl duration-300 ">
 
 
             <div onClick={() => handleProductView({
@@ -56,8 +57,8 @@ const ProductCard = (
                     className="text-lg font-semibold mb-2 cursor-pointer">
                     {productName}
                 </h2>
-                <div className="min-h-20 max-h-20">
-                    <p className="text-sm text-gray-600">{description}</p>
+                <div className="min-h-15 max-h-18">
+                    <p className="text-sm text-gray-600">{truncateText(description, 60)}</p>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -79,11 +80,9 @@ const ProductCard = (
                     <button
                         disabled={!isAvailable || btnLoader}
                         onClick={() => { }}
-                        className={`bg-blue-500 ${isAvailable
-                            ? "opacity-100 hover:bg-blue-600 cursor-pointer"
-                            : "opacity-70"
-                            } text-white py-2 px-2 text-sm rounded-md flex items-center justify-center transition-colors duration-300`}
-                    >
+                        className={`bg-blue-500 ${isAvailable ? "opacity-100 hover:bg-blue-600 cursor-pointer" : "opacity-70"}
+                         text-white py-2 px-3 rounded-lg items-center transition-colors duration-300 w-36 flex justify-center`}>
+
                         <FaShoppingCart className="mr-2" />
                         {isAvailable ? "Add to Cart" : "Stock Out"}
                     </button>
@@ -96,7 +95,7 @@ const ProductCard = (
                     isAvailable={isAvailable}
                 />
             </div>
-        </div>
+        </div >
     )
 }
 

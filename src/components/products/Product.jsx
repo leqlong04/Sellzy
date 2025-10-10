@@ -1,16 +1,35 @@
 import { FaExclamationTriangle } from "react-icons/fa";
-import ProductCard from "./ProductCard";
+import ProductCard from "../shared/ProductCard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchProducts } from "../../store/actions";
+import Filter from "./Filter";
+import { RevolvingDot } from "react-loader-spinner";
+import useProductFilter from "../../hooks/useProductFilter";
+import { ClockLoader, RingLoader } from "react-spinners";
+import Loader from "../shared/Loader";
 
 const Product = () => {
+
+    // const { isLoading, errorMessage } = useSelector((state) => state.errors);
+
+
     const isLoading = false;
     const errorMessage = "";
+    // const { products } = useSelector((state) => state.product);
+
+    // const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     dispatch(fetchProducts());
+    // }, [dispatch]);
     // Sample product data
     const products = [
         {
             productId: 652,
             productName: "Iphone Xs max",
             image: "https://placehold.co/600x400",
-            description: "Experience the latest in mobile technology with advanced cameras, powerful processing, and an all-day battery.",
+            description: "Experience the latest in mobile technology with advanced cameras.Experience the latest in mobile technology with advanced cameras.Experience the latest in mobile technology with advanced cameras.Experience the latest in mobile technology with advanced cameras.",
             quantity: 10,
             price: 1450.0,
             discount: 10.0,
@@ -20,7 +39,7 @@ const Product = () => {
             productId: 654,
             productName: "MacBook Air M2s",
             image: "https://placehold.co/600x400",
-            description: "Ultra-thin laptop with Apple's M2 chip, providing fast performance in a lightweight, portable design.",
+            description: "Ultra-thin laptop with Apple's M2 chip, providing ",
             quantity: 0,
             price: 2550.0,
             discount: 20.0,
@@ -28,9 +47,11 @@ const Product = () => {
         }
     ];
     return (
-        <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:w-[90%] 2xl:mx-auto">
+        <div className="lg:px-10 sm:px-3 px-2 py-1 2xl:w-[105%] 2xl:mx-auto">
+            <Filter />
             {isLoading ? (
-                <p>It is loading...</p>
+                <Loader text={"Loading products..."} />
+
             ) : errorMessage ? (
                 <div className="flex justify-center items-center h-[200px]">
                     <FaExclamationTriangle className="text-slate-800 text-3xl mr-2" />
@@ -39,7 +60,8 @@ const Product = () => {
 
             ) : (
                 <div className="min-h-[700px]">
-                    <div className="grid 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-6">
+                    <div className="pb-6 pt-10 grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-y-1 gap-x-5">
+
 
                         {products &&
                             products.map((item, i) => <ProductCard key={i} {...item} />)}
