@@ -1,134 +1,197 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Tooltip } from "@mui/material";
-import { useEffect, useState } from "react";
-import { FaArrowAltCircleUp, FaArrowDown, FaArrowUp, FaRegArrowAltCircleUp, FaSearch } from "react-icons/fa";
-import { MdRefresh, MdSearch } from "react-icons/md";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+"use client"
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import ReactSlider from "react-slider"
 
 const Filter = () => {
-
     const categories = [
         { categoryId: 1, categoryName: "Electronics" },
         { categoryId: 2, categoryName: "Clothing" },
-        { categoryId: 3, categoryName: "Books" },
-        { categoryId: 4, categoryName: "Home & Kitchen" },
-        { categoryId: 5, categoryName: "Sports & Outdoors" },
-    ];
+        { categoryId: 3, categoryName: "Home & Garden" },
+        { categoryId: 4, categoryName: "Sports" },
+        { categoryId: 5, categoryName: "Books" },
+        { categoryId: 6, categoryName: "Toys" },
+        { categoryId: 7, categoryName: "Beauty" },
+        { categoryId: 8, categoryName: "Automotive" },
+    ]
 
-    const [searchParams] = useSearchParams();
-    const params = new URLSearchParams(searchParams);
-    const pathName = useLocation().pathname;
-    const navigate = useNavigate();
+    const [searchParams] = useSearchParams()
+    const params = new URLSearchParams(searchParams)
+    const pathName = useLocation().pathname
+    const navigate = useNavigate()
 
-    const [category, setCategory] = useState("all");
-    const [sortOrder, setSortOrder] = useState("asc");
-    const [searchTerm, setSearchTerm] = useState("");
-
-    useEffect(() => {
-        const currentCategory = searchParams.get("category") || "all";
-        const currentSortOrder = searchParams.get("sortby") || "asc";
-        const currentSearchTerm = searchParams.get("keyword") || "";
-
-        setCategory(currentCategory);
-        setSortOrder(currentSortOrder);
-        setSearchTerm(currentSearchTerm);
-
-    }, [searchParams]);
+    const [selectedCategories, setSelectedCategories] = useState([])
+    const [priceRange, setPriceRange] = useState([0, 200])
+    const [trustScore, setTrustScore] = useState(70)
+    const [sellerRating, setSellerRating] = useState([])
 
     useEffect(() => {
-        const handler = setTimeout(() => {
-            if (searchTerm) {
-                searchParams.set("keyword", searchTerm);
-            } else {
-                searchParams.delete("keyword");
-            }
+        const currentCategories = searchParams.get("categories")?.split(",") || []
+        const minPrice = Number.parseInt(searchParams.get("minPrice")) || 0
+        const maxPrice = Number.parseInt(searchParams.get("maxPrice")) || 200
+        const minTrust = Number.parseInt(searchParams.get("trustScore")) || 70
+        const ratings = searchParams.get("ratings")?.split(",") || []
 
-            navigate(`${pathName}?${searchParams.toString()}`);
-        }, 700);
+        setSelectedCategories(currentCategories)
+        setPriceRange([minPrice, maxPrice])
+        setTrustScore(minTrust)
+        setSellerRating(ratings)
+    }, [searchParams])
 
-        return () => {
-            clearTimeout(handler);
-        }
-    }, [searchParams, searchTerm, navigate, pathName]);
+    const handleCategoryToggle = (categoryName) => {
+        const newCategories = selectedCategories.includes(categoryName)
+            ? selectedCategories.filter((c) => c !== categoryName)
+            : [...selectedCategories, categoryName]
 
-    const handleCategoryChange = (e) => {
-        const selectedCategory = e.target.value;
-        if (selectedCategory === "all") {
-            params.delete("category")
+        setSelectedCategories(newCategories)
+
+        if (newCategories.length > 0) {
+            params.set("categories", newCategories.join(","))
         } else {
-            params.set("category", selectedCategory);
+            params.delete("categories")
         }
-        navigate(`${pathName}?${params}`);
-        setCategory(e.target.value);
-    };
+        navigate(`${pathName}?${params}`)
+    }
 
-    const toggleSortOrder = () => {
-        setSortOrder((prevOrder) => {
-            const newOrder = (prevOrder === "asc") ? "desc" : "asc";
-            params.set("sortby", newOrder);
-            navigate(`${pathName}?${params}`);
-            return newOrder;
-        })
-    };
+    const handlePriceChange = (values) => {
+        setPriceRange(values)
+        params.set("minPrice", values[0])
+        params.set("maxPrice", values[1])
+        navigate(`${pathName}?${params}`)
+    }
 
-    const handleClearFilter = () => {
-        navigate({ pathname: window.location.pathname });
+    const handleTrustScoreChange = (value) => {
+        setTrustScore(value)
+        params.set("trustScore", value)
+        navigate(`${pathName}?${params}`)
+    }
 
-    };
+    const handleRatingToggle = (rating) => {
+        const newRatings = sellerRating.includes(rating)
+            ? sellerRating.filter((r) => r !== rating)
+            : [...sellerRating, rating]
+
+        setSellerRating(newRatings)
+
+        if (newRatings.length > 0) {
+            params.set("ratings", newRatings.join(","))
+        } else {
+            params.delete("ratings")
+        }
+        navigate(`${pathName}?${params}`)
+    }
 
     return (
-        <div className="flex lg:flex-row flex-col-reverse lg:justify-between justify-center items-center gap-4">
-            <div className="relative flex items-center 2xl:w-[450px] sm:w-[420px] w-full">
-                <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border border-gray-400 text-slate-800 rounded-md py-2 pl-10 pr-4 w-full focus:outline-none focus:ring-1 focus:ring-[#1976d2]"
+        <div className="w-full bg-gray-50 p-6 rounded-lg border border-gray-200">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">Filters</h2>
 
+            {/* Categories */}
+            <div className="mb-8">
+                <h3 className="text-base font-semibold text-gray-900 mb-4">Categories</h3>
+                <div className="space-y-3">
+                    {categories.map((category) => (
+                        <label key={category.categoryId} className="flex items-center cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={selectedCategories.includes(category.categoryName)}
+                                onChange={() => handleCategoryToggle(category.categoryName)}
+                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                            />
+                            <span className="ml-3 text-sm text-gray-700 group-hover:text-gray-900">{category.categoryName}</span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            {/* Price Range */}
+            <div className="mb-8">
+                <h3 className="text-base font-semibold text-gray-900 mb-4">Price Range</h3>
+                <ReactSlider
+                    className="horizontal-slider"
+                    thumbClassName="slider-thumb"
+                    trackClassName="slider-track"
+                    value={priceRange}
+                    onChange={handlePriceChange}
+                    min={0}
+                    max={200}
+                    minDistance={10}
+                    pearling
                 />
-                <MdSearch className="absolute left-3 text-slate-800 size={20}" />
+                <div className="flex justify-between mt-3">
+                    <span className="text-sm font-medium text-gray-700">${priceRange[0]}</span>
+                    <span className="text-sm font-medium text-gray-700">${priceRange[1]}</span>
+                </div>
             </div>
 
-            <div className="flex lg:flex-row flex-col gap-4 items-center">
-                <FormControl
-                    className="text-slate-800 border-slate-700"
-                    variant="outlined" size="small">
-                    <InputLabel id="category-select-label">Category</InputLabel>
-                    <Select
-                        labelId="category-select-label"
-                        value={category}
-                        onChange={handleCategoryChange}
-                        label="Category"
-                        className="min-w-[75px] text-slate-800 border-slate-700">
-                        <MenuItem value="all">All</MenuItem>
-                        {categories.map((item) => (
-                            <MenuItem key={item.categoryId} value={item.categoryName}>{item.categoryName}</MenuItem>
-                        ))}
-
-                    </Select>
-                </FormControl>
-
-                <Tooltip title="Sort by Price">
-                    <Button variant="contained" color="primary" className="flex items-center gap-2 h-10"
-                        onClick={toggleSortOrder}>
-                        SORT BY
-                        {sortOrder === "asc" ? (
-                            <FaArrowUp size={15} />
-                        ) : (
-                            <FaArrowDown size={15} />
-                        )}
-
-                    </Button>
-                </Tooltip>
-
-                <button className="flex items-center gap-2 cursor-pointer bg-rose-900 text-white px-3 py-2 rounded-md transition duration-300 ease-in shadow-md focus:outline-none hover:bg-rose-800"
-                    onClick={handleClearFilter}>
-                    <MdRefresh size={17} className="font-semibold" />
-                    <span className="font-semibold">Clear Filters</span>
-                </button>
-
+            {/* Minimum Trust Score */}
+            <div className="mb-8">
+                <h3 className="text-base font-semibold text-gray-900 mb-4">Minimum Trust Score</h3>
+                <ReactSlider
+                    className="horizontal-slider-single"
+                    thumbClassName="slider-thumb"
+                    trackClassName="slider-track"
+                    value={trustScore}
+                    onChange={handleTrustScoreChange}
+                    min={0}
+                    max={100}
+                />
+                <div className="mt-3 text-sm font-medium text-gray-700">{trustScore}% and above</div>
             </div>
+
+            {/* Seller Rating */}
+            <div>
+                <h3 className="text-base font-semibold text-gray-900 mb-4">Seller Rating</h3>
+                <div className="space-y-3">
+                    {["4", "3", "2"].map((rating) => (
+                        <label key={rating} className="flex items-center cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={sellerRating.includes(rating)}
+                                onChange={() => handleRatingToggle(rating)}
+                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                            />
+                            <span className="ml-3 flex items-center">
+                                {[...Array(Number.parseInt(rating))].map((_, i) => (
+                                    <span key={i} className="text-yellow-400">
+                                        ★
+                                    </span>
+                                ))}
+                                <span className="ml-1 text-sm text-gray-700 group-hover:text-gray-900">& up</span>
+                            </span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            <style>{`
+                .horizontal-slider {
+                    width: 100%;
+                    height: 6px;
+                    background: #e5e7eb;
+                    border-radius: 3px;
+                }
+                .horizontal-slider-single {
+                    width: 100%;
+                    height: 6px;
+                    background: #e5e7eb;
+                    border-radius: 3px;
+                }
+                .slider-thumb {
+                    width: 18px;
+                    height: 18px;
+                    background: #1f2937;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    top: -6px;
+                }
+                .slider-track {
+                    background: #1f2937;
+                    height: 6px;
+                    border-radius: 3px;
+                }
+            `}</style>
         </div>
     )
 }
+
 export default Filter
