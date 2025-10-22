@@ -3,6 +3,7 @@ import { Divider } from '@mui/material';
 import { useState } from 'react'
 import { MdClose, MdDone } from 'react-icons/md';
 import Status from './Status';
+import getImageUrl from "../../utils/getImageUrl";
 
 function ProductViewModal({ open, setOpen, product, isAvailable }) {
     const {
@@ -73,7 +74,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                                         Save ${discount.toFixed(2)}
                                     </div>
                                 )}
-                                <img className="w-full h-full object-cover" src={image || "/placeholder.svg"} alt={productName} />
+                                <img className="w-full h-full object-cover"  src={getImageUrl(image)} alt={productName} onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }} />
                             </div>
                         )}
 

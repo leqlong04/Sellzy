@@ -1,19 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 import ReactSlider from "react-slider"
+import { fetchCategories } from "../../store/actions"
 
 const Filter = () => {
-    const categories = [
-        { categoryId: 1, categoryName: "Electronics" },
-        { categoryId: 2, categoryName: "Clothing" },
-        { categoryId: 3, categoryName: "Home & Garden" },
-        { categoryId: 4, categoryName: "Sports" },
-        { categoryId: 5, categoryName: "Books" },
-        { categoryId: 6, categoryName: "Toys" },
-        { categoryId: 7, categoryName: "Beauty" },
-        { categoryId: 8, categoryName: "Automotive" },
-    ]
+    const dispatch = useDispatch();
+    const { categories } = useSelector((state) => state.products);
 
     const [searchParams] = useSearchParams()
     const params = new URLSearchParams(searchParams)
@@ -24,6 +18,10 @@ const Filter = () => {
     const [priceRange, setPriceRange] = useState([0, 200])
     const [trustScore, setTrustScore] = useState(70)
     const [sellerRating, setSellerRating] = useState([])
+
+    useEffect(() => {
+        dispatch(fetchCategories());
+    }, [dispatch]);
 
     useEffect(() => {
         const currentCategories = searchParams.get("categories")?.split(",") || []
@@ -89,7 +87,7 @@ const Filter = () => {
             <div className="mb-8">
                 <h3 className="text-base font-semibold text-gray-900 mb-4">Categories</h3>
                 <div className="space-y-3">
-                    {categories.map((category) => (
+                    {categories && categories.map((category) => (
                         <label key={category.categoryId} className="flex items-center cursor-pointer group">
                             <input
                                 type="checkbox"
@@ -100,6 +98,9 @@ const Filter = () => {
                             <span className="ml-3 text-sm text-gray-700 group-hover:text-gray-900">{category.categoryName}</span>
                         </label>
                     ))}
+                    {!categories && (
+                        <p className="text-sm text-gray-500">Loading categories...</p>
+                    )}
                 </div>
             </div>
 

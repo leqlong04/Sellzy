@@ -1,72 +1,39 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ProductCard from "../shared/ProductCard"
 import Filter from "./Filter"
 import Loader from "../shared/Loader"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchProducts } from "../../store/actions"
+import { useSearchParams } from "react-router-dom"
 
 export default function Page() {
     const [sortBy, setSortBy] = useState("best-match")
+    const [searchParams] = useSearchParams()
+    const { products, categories } = useSelector(
+        (state) => state.products
+    )
+    const dispatch = useDispatch();
 
-    // Sample product data matching the image
-    const products = [
-        {
-            productId: 1,
-            productName: "Wireless Bluetooth Headphones",
-            image: "/images (1).jpg",
-            description: "Premium wireless headphones with noise cancellation and 30-hour battery life",
-            quantity: 50,
-            price: 99.99,
-            discount: 20.0,
-            specialPrice: 79.99,
-            rating: 4,
-            reviewCount: 1247,
-            seller: "TechGear Pro",
-            trustScore: 92,
-            trustLevel: "Excellent",
-        },
-        {
-            productId: 2,
-            productName: "Premium Cotton T-Shirt",
-            image: "/images (2).jpg",
-            description: "100% organic cotton t-shirt with comfortable fit",
-            quantity: 100,
-            price: 24.99,
-            specialPrice: null,
-            rating: 3.5,
-            reviewCount: 856,
-            seller: "Fashion Forward",
-            trustScore: 85,
-            trustLevel: "Very Good",
-        },
-        {
-            productId: 3,
-            productName: "Smart Home Security Camera",
-            image: "/images (3).jpg",
-            description: "1080p HD security camera with night vision and motion detection",
-            quantity: 30,
-            price: 199.99,
-            discount: 50.0,
-            specialPrice: 149.99,
-            rating: 4.5,
-            reviewCount: 2103,
-            seller: "SecureHome Tech",
-            trustScore: 96,
-            trustLevel: "Excellent",
-        },
-        {
-            productId: 4,
-            productName: "Organic Coffee Beans 2lb",
-            image: "/images (4).jpg",
-            description: "Premium organic coffee beans, medium roast",
-            quantity: 75,
-            price: 18.99,
-            specialPrice: null,
-            rating: 4.5,
-            reviewCount: 743,
-            seller: "Mountain Roasters",
-            trustScore: 89,
-            trustLevel: "Very Good",
-        },
-    ]
+    useEffect(() => {
+        const selectedCategories = searchParams.get("categories")?.split(",") || [];
+        
+        // Nếu có category được chọn, lấy categoryId đầu tiên
+        if (selectedCategories.length > 0 && categories) {
+            const selectedCategory = categories.find(
+                cat => cat.categoryName === selectedCategories[0]
+            );
+            
+            if (selectedCategory) {
+                // Gọi API lấy products theo category với categoryId
+                dispatch(fetchProducts("", selectedCategory.categoryId));
+                return;
+            }
+        }
+        
+        // Nếu không có category, lấy tất cả products
+        dispatch(fetchProducts());
+    }, [dispatch, searchParams, categories]);
+
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -121,7 +88,7 @@ export default function Page() {
 
                         {/* Product Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {products.map((product) => (
+                            {products && products.map((product) => (
                                 <ProductCard key={product.productId} {...product} />
                             ))}
                         </div>

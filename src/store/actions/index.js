@@ -1,11 +1,23 @@
 import toast from "react-hot-toast";
 import api from "../../api/api";
 
-export const fetchProducts = (queryString) => async (dispatch) => {
+export const fetchProducts = (queryString, categoryId) => async (dispatch) => {
 
     try {
         dispatch({ type: "IS_FETCHING" });
-        const { data } = await api.get(`/public/products?${queryString}`);
+        
+        let url;
+        if (categoryId) {
+            // Nếu có categoryId, dùng endpoint riêng cho category
+            const qs = queryString ? `?${queryString}` : "";
+            url = `/public/categories/${categoryId}/products${qs}`;
+        } else {
+            // Nếu không, dùng endpoint lấy tất cả
+            const qs = queryString ? `${queryString}` : "";
+            url = qs && qs.trim().length > 0 ? `/public/products?${qs}` : "/public/products";
+        }
+        
+        const { data } = await api.get(url);
         dispatch({
             type: "FETCH_PRODUCTS",
             payload: data.content,
@@ -89,3 +101,21 @@ export const removeFromCart =
         toast.success(`${data.productName} remove from cart`);
         localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
     }
+
+export const fetchCategories = () => async (dispatch) => {
+    try {
+        dispatch({ type: "IS_FETCHING" });
+        const { data } = await api.get("/public/categories");
+        dispatch({
+            type: "FETCH_CATEGORIES",
+            payload: data.content,
+        });
+        dispatch({ type: "FETCH_SUCCESS" });
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "FETCH_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch categories"
+        });
+    }
+};

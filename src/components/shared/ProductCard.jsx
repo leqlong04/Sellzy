@@ -5,6 +5,7 @@ import truncateText from "../../utils/truncateText";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/actions";
 import toast from "react-hot-toast";
+import getImageUrl from "../../utils/getImageUrl";
 
 const ProductCard = ({
     productId,
@@ -100,8 +101,9 @@ const ProductCard = ({
                 )}
                 <img
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-111"
-                    src={image || "/placeholder.svg"}
+                    src={getImageUrl(image)}
                     alt={productName}
+                    onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
                 />
             </div>
 
@@ -145,7 +147,7 @@ const ProductCard = ({
                     )}
                 </div>
 
-                <p className="text-sm text-blue-600">by {seller}</p>
+                {/* <p className="text-sm text-blue-600">by {seller}</p>
 
                 <div className={`flex items-center gap-2 p-2 rounded-lg ${trustColors.bg}`}>
                     <div className="flex items-center gap-1">
@@ -167,7 +169,7 @@ const ProductCard = ({
                         </div>
                         <span className={`text-xs ${trustColors.text} mt-1 block`}>{trustLevel}</span>
                     </div>
-                </div>
+                </div> */}
 
                 <button
                     disabled={!isAvailable || btnLoader}
@@ -178,7 +180,7 @@ const ProductCard = ({
                         specialPrice,
                         price,
                         productId,
-                        quantity,
+                        quantity
                     })}
                     className={`${isAvailable ? "bg-yellow-400 hover:bg-yellow-500 cursor-pointer" : "bg-gray-300 opacity-70"
                         } text-gray-900 py-3 px-4 rounded-lg w-full font-bold text-sm transition-all duration-300`}
