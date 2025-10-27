@@ -2,6 +2,7 @@
 
 import { Link } from "react-router-dom"
 import ProductCard from "../shared/ProductCard"
+import Navbar from "../shared/Navbar"
 import {
     FaShoppingCart,
     FaShieldAlt,
@@ -100,43 +101,7 @@ export default function HomePage() {
                 <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
             </div>
 
-            <header className="bg-white/80 backdrop-blur-md border-b border-purple-200 sticky top-0 z-50 shadow-lg">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        <Link
-                            to="/home"
-                            className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
-                        >
-                            TrustShop
-                        </Link>
-                        <nav className="hidden md:flex items-center gap-8">
-                            <Link to="/home" className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">
-                                Home
-                            </Link>
-                            <Link to="/page" className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">
-                                Products
-                            </Link>
-                            <Link
-                                to="#categories"
-                                className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors"
-                            >
-                                Categories
-                            </Link>
-                            <Link to="#about" className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">
-                                About
-                            </Link>
-                        </nav>
-                        <div className="flex items-center gap-4">
-                            <button className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">
-                                Sign In
-                            </button>
-                            <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all">
-                                Get Started
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
             <section className="relative overflow-hidden py-20 lg:py-32">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 opacity-90"></div>
@@ -155,7 +120,7 @@ export default function HomePage() {
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Link
-                                href="/page"
+                                to="/products"
                                 className="bg-white text-purple-600 px-8 py-4 rounded-full text-base font-semibold hover:shadow-2xl hover:scale-105 transition-all w-full sm:w-auto flex items-center justify-center gap-2"
                             >
                                 <FaShoppingCart /> Browse Products
@@ -209,7 +174,7 @@ export default function HomePage() {
                             return (
                                 <Link
                                     key={index}
-                                    href="/page"
+                                    to="/products"
                                     className="bg-white rounded-2xl p-6 text-center hover:shadow-2xl transition-all duration-300 group border-2 border-transparent hover:border-purple-300 relative overflow-hidden"
                                 >
                                     <div
@@ -327,7 +292,7 @@ export default function HomePage() {
                             <p className="text-lg text-gray-600">Discover our most popular items</p>
                         </div>
                         <Link
-                            href="/page"
+                            to="/products"
                             className="hidden md:flex items-center gap-2 text-purple-600 font-semibold hover:gap-3 transition-all"
                         >
                             View All <FaArrowRight />
@@ -340,7 +305,7 @@ export default function HomePage() {
                     </div>
                     <div className="text-center mt-8 md:hidden">
                         <Link
-                            href="/page"
+                            to="/products"
                             className="inline-flex items-center gap-2 text-purple-600 font-semibold hover:gap-3 transition-all"
                         >
                             View All Products <FaArrowRight />
@@ -360,7 +325,7 @@ export default function HomePage() {
                         Join thousands of satisfied customers who trust our AI-powered platform
                     </p>
                     <Link
-                        href="/page"
+                        to="/products"
                         className="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-4 rounded-full text-base font-semibold hover:shadow-2xl hover:scale-105 transition-all"
                     >
                         <FaShoppingCart /> Start Shopping Now
@@ -375,17 +340,17 @@ export default function HomePage() {
                             <h3 className="font-semibold mb-4 text-purple-400">Shop</h3>
                             <ul className="space-y-2">
                                 <li>
-                                    <Link href="/page" className="text-gray-300 hover:text-purple-400 transition-colors">
+                                    <Link to="/products" className="text-gray-300 hover:text-purple-400 transition-colors">
                                         All Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/page" className="text-gray-300 hover:text-purple-400 transition-colors">
+                                    <Link to="/products" className="text-gray-300 hover:text-purple-400 transition-colors">
                                         New Arrivals
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/page" className="text-gray-300 hover:text-purple-400 transition-colors">
+                                    <Link to="/products" className="text-gray-300 hover:text-purple-400 transition-colors">
                                         Best Sellers
                                     </Link>
                                 </li>

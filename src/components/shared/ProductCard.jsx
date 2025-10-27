@@ -126,10 +126,17 @@ const ProductCard = ({
                             trustLevel,
                         })
                     }
-                    className="text-base font-semibold cursor-pointer text-gray-900 hover:text-blue-600 transition-colors line-clamp-2 min-h-[1rem]"
+                    className="text-base font-semibold cursor-pointer text-gray-900 hover:text-blue-600 transition-colors min-h-[3rem]"
+                    title={productName}
                 >
-                    {productName}
+                    {truncateText(productName, 30)}
                 </h2>
+
+                {description && (
+                    <p className="text-sm text-gray-600 min-h-[2.5rem]" title={description}>
+                        {truncateText(description, 80)}
+                    </p>
+                )}
 
                 <div className="flex items-center gap-1">
                     <div className="flex items-center">{renderStars()}</div>

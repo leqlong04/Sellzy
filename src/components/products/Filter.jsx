@@ -36,19 +36,17 @@ const Filter = () => {
         setSellerRating(ratings)
     }, [searchParams])
 
-    const handleCategoryToggle = (categoryName) => {
-        const newCategories = selectedCategories.includes(categoryName)
-            ? selectedCategories.filter((c) => c !== categoryName)
-            : [...selectedCategories, categoryName]
-
-        setSelectedCategories(newCategories)
-
-        if (newCategories.length > 0) {
-            params.set("categories", newCategories.join(","))
+    const handleCategoryChange = (e) => {
+        const categoryName = e.target.value;
+        
+        if (categoryName) {
+            setSelectedCategories([categoryName]);
+            params.set("categories", categoryName);
         } else {
-            params.delete("categories")
+            setSelectedCategories([]);
+            params.delete("categories");
         }
-        navigate(`${pathName}?${params}`)
+        navigate(`${pathName}?${params}`);
     }
 
     const handlePriceChange = (values) => {
@@ -85,23 +83,22 @@ const Filter = () => {
 
             {/* Categories */}
             <div className="mb-8">
-                <h3 className="text-base font-semibold text-gray-900 mb-4">Categories</h3>
-                <div className="space-y-3">
+                <h3 className="text-base font-semibold text-gray-900 mb-4">Category</h3>
+                <select
+                    value={selectedCategories[0] || ""}
+                    onChange={handleCategoryChange}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer"
+                >
+                    <option value="">All Categories</option>
                     {categories && categories.map((category) => (
-                        <label key={category.categoryId} className="flex items-center cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                checked={selectedCategories.includes(category.categoryName)}
-                                onChange={() => handleCategoryToggle(category.categoryName)}
-                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-                            />
-                            <span className="ml-3 text-sm text-gray-700 group-hover:text-gray-900">{category.categoryName}</span>
-                        </label>
+                        <option key={category.categoryId} value={category.categoryName}>
+                            {category.categoryName}
+                        </option>
                     ))}
-                    {!categories && (
-                        <p className="text-sm text-gray-500">Loading categories...</p>
-                    )}
-                </div>
+                </select>
+                {!categories && (
+                    <p className="text-sm text-gray-500 mt-2">Loading categories...</p>
+                )}
             </div>
 
             {/* Price Range */}

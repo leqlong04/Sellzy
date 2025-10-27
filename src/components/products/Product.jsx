@@ -2,41 +2,53 @@ import { useEffect, useState } from "react"
 import ProductCard from "../shared/ProductCard"
 import Filter from "./Filter"
 import Loader from "../shared/Loader"
+import Navbar from "../shared/Navbar"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchProducts } from "../../store/actions"
 import { useSearchParams } from "react-router-dom"
+import { Pagination } from "@mui/material"
+import Paginations from "../shared/Paginations"
 
 export default function Page() {
     const [sortBy, setSortBy] = useState("best-match")
     const [searchParams] = useSearchParams()
-    const { products, categories } = useSelector(
+    const { products, categories, pagination } = useSelector(
         (state) => state.products
     )
     const dispatch = useDispatch();
 
     useEffect(() => {
         const selectedCategories = searchParams.get("categories")?.split(",") || [];
+        const currentPage = searchParams.get("page") || "1";
         
+        // Build query string với pagination
+        const queryParams = new URLSearchParams();
+        queryParams.set("pageNumber", (parseInt(currentPage) - 1).toString()); // Backend pageNumber bắt đầu từ 0
+        queryParams.set("pageSize", "10");
+        
+        const queryString = queryParams.toString();
+
         // Nếu có category được chọn, lấy categoryId đầu tiên
         if (selectedCategories.length > 0 && categories) {
             const selectedCategory = categories.find(
                 cat => cat.categoryName === selectedCategories[0]
             );
-            
+
             if (selectedCategory) {
-                // Gọi API lấy products theo category với categoryId
-                dispatch(fetchProducts("", selectedCategory.categoryId));
+                // Gọi API lấy products theo category với categoryId và pagination
+                dispatch(fetchProducts(queryString, selectedCategory.categoryId));
                 return;
             }
         }
-        
-        // Nếu không có category, lấy tất cả products
-        dispatch(fetchProducts());
+
+        // Nếu không có category, lấy tất cả products với pagination
+        dispatch(fetchProducts(queryString));
     }, [dispatch, searchParams, categories]);
 
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <Navbar />
             <div className="container mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Sidebar Filter */}
@@ -91,6 +103,11 @@ export default function Page() {
                             {products && products.map((product) => (
                                 <ProductCard key={product.productId} {...product} />
                             ))}
+                        </div>
+                        <div className="flex justify-center pt-10">
+                            <Paginations
+                                numberOfPage={pagination?.totalPages}
+                                totalProducts={pagination?.totalElements} />
                         </div>
                     </div>
                 </div>
