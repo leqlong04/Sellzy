@@ -6,8 +6,9 @@ const resolvedBaseUrl = (baseUrlFromEnv && String(baseUrlFromEnv).trim().length 
   : "http://localhost:8080/api";
 
 const api = axios.create({
-    baseURL: resolvedBaseUrl,
-    withCredentials: true,
+  baseURL: resolvedBaseUrl,
+  withCredentials: true,
 });
+
 
 export default api;

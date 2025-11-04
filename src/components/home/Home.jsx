@@ -101,7 +101,7 @@ export default function HomePage() {
                 <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
             </div>
 
-            <Navbar />
+
 
             <section className="relative overflow-hidden py-20 lg:py-32">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 opacity-90"></div>

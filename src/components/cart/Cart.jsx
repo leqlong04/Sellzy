@@ -28,7 +28,7 @@ const Cart = () => {
     }
     return (
         <>
-            <Navbar />
+
             <div className="lg:px-14 sm:px-8 px-4 py-10">
                 <div className="flex flex-col items-center mb-12">
                     <h1 className="text-4xl font-bold text-gray-900 flex items-center gap-3">

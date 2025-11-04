@@ -20,12 +20,12 @@ export default function Page() {
     useEffect(() => {
         const selectedCategories = searchParams.get("categories")?.split(",") || [];
         const currentPage = searchParams.get("page") || "1";
-        
+
         // Build query string với pagination
         const queryParams = new URLSearchParams();
         queryParams.set("pageNumber", (parseInt(currentPage) - 1).toString()); // Backend pageNumber bắt đầu từ 0
         queryParams.set("pageSize", "10");
-        
+
         const queryString = queryParams.toString();
 
         // Nếu có category được chọn, lấy categoryId đầu tiên
@@ -48,7 +48,7 @@ export default function Page() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <Navbar />
+
             <div className="container mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Sidebar Filter */}
