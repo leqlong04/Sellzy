@@ -64,6 +64,7 @@ public class  JwtUtils {
                 .path("/api")
                 .maxAge(24*60*60*10) //(10ngay)tgian cookie ton tai
                 .httpOnly(false)
+                .secure(false)
                 .build();
         return cookie;
     }

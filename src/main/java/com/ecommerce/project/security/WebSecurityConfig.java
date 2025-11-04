@@ -84,7 +84,8 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/admin/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
-                                .anyRequest().authenticated()); //cac api khac phai co jwt hop le
+                                .anyRequest().authenticated()) //cac api khac phai co jwt hop le
+                .cors(); // Enable CORS with the configuration from WebConfig
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter() //them filter jwt trc
                 , UsernamePasswordAuthenticationFilter.class);

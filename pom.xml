@@ -80,6 +80,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>30.0.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.12.5</version>
