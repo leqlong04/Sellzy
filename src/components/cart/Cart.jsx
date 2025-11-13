@@ -21,7 +21,7 @@ const Cart = () => {
     if (!cart || cart.length === 0) {
         return (
             <>
-                <Navbar />
+
                 <CartEmpty />
             </>
         )
