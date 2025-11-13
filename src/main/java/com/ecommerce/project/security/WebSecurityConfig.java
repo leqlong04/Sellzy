@@ -68,6 +68,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+                .cors(cors-> {})
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(
                         session ->
@@ -79,9 +80,11 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/seller/**").hasAnyRole("ADMIN","SELLER")
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/api/public/**").permitAll()
-                                .requestMatchers("/api/admin/**").permitAll()
+                                //.requestMatchers("/api/admin/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
                                 .anyRequest().authenticated()) //cac api khac phai co jwt hop le
@@ -129,41 +132,57 @@ public class WebSecurityConfig {
                         return roleRepository.save(newAdminRole);
                     });
 
-            Set<Role> userRoles = Set.of(userRole);
-            Set<Role> sellerRoles = Set.of(sellerRole);
-            Set<Role> adminRoles = Set.of(userRole, sellerRole, adminRole);
-
-
             // Create users if not already present
             if (!userRepository.existsByUserName("user1")) {
                 User user1 = new User("user1", "user1@example.com", passwordEncoder.encode("password1"));
+                user1.getRoles().add(userRole);
                 userRepository.save(user1);
             }
 
             if (!userRepository.existsByUserName("seller1")) {
                 User seller1 = new User("seller1", "seller1@example.com", passwordEncoder.encode("password2"));
+                seller1.getRoles().add(sellerRole);
                 userRepository.save(seller1);
             }
 
             if (!userRepository.existsByUserName("admin")) {
                 User admin = new User("admin", "admin@example.com", passwordEncoder.encode("adminPass"));
+                admin.getRoles().add(userRole);
+                admin.getRoles().add(sellerRole);
+                admin.getRoles().add(adminRole);
                 userRepository.save(admin);
             }
 
             // Update roles for existing users
             userRepository.findByUserName("user1").ifPresent(user -> {
-                user.setRoles(userRoles);
-                userRepository.save(user);
+                if (user.getRoles() == null) {
+                    user.setRoles(new java.util.HashSet<>());
+                }
+                if (user.getRoles().add(userRole)) {
+                    userRepository.save(user);
+                }
             });
 
             userRepository.findByUserName("seller1").ifPresent(seller -> {
-                seller.setRoles(sellerRoles);
-                userRepository.save(seller);
+                if (seller.getRoles() == null) {
+                    seller.setRoles(new java.util.HashSet<>());
+                }
+                if (seller.getRoles().add(sellerRole)) {
+                    userRepository.save(seller);
+                }
             });
 
             userRepository.findByUserName("admin").ifPresent(admin -> {
-                admin.setRoles(adminRoles);
-                userRepository.save(admin);
+                if (admin.getRoles() == null) {
+                    admin.setRoles(new java.util.HashSet<>());
+                }
+                boolean updated = false;
+                updated = admin.getRoles().add(userRole) || updated;
+                updated = admin.getRoles().add(sellerRole) || updated;
+                updated = admin.getRoles().add(adminRole) || updated;
+                if (updated) {
+                    userRepository.save(admin);
+                }
             });
         };
     }

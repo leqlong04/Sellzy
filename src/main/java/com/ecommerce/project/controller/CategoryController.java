@@ -47,26 +47,24 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Invalid Input", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
-    @PostMapping("/public/categories")
-    public ResponseEntity<CategoryDTO> createCategory(
-            @Valid @RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO savedCategoryDTO =categoryService.createCategory(categoryDTO);
+    @PostMapping("/admin/categories")
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
+        CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(savedCategoryDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<CategoryDTO> deleteCategory(@Parameter(description = "Id of the category that you wish to delete")
-                                                          @PathVariable  Long categoryId) {
-            CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
-            return new ResponseEntity<>(deletedCategory, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId){
+        CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
+        return new ResponseEntity<>(deletedCategory, HttpStatus.OK);
     }
 
-    @PutMapping("/public/categories/{categoryId}")
+
+    @PutMapping("/admin/categories/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO,
-                                                 @PathVariable Long categoryId)
-    {
-            CategoryDTO savedCategoryDTO = categoryService.updateCategory(categoryDTO,categoryId);
-            return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
+                                                      @PathVariable Long categoryId){
+        CategoryDTO savedCategoryDTO = categoryService.updateCategory(categoryDTO, categoryId);
+        return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
     }
 
 
