@@ -17,6 +17,13 @@ build/
 # Environment files
 .env
 .env.*
+.env.local
+.env.*.local
+
+# Spring Boot configuration files (chứa secrets)
+# Ignore application.properties nhưng cho phép application.properties.example
+**/application.properties
+!**/application.properties.example
 
 # Backend build outputs
 target/
