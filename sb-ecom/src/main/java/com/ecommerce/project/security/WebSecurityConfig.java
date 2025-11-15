@@ -82,11 +82,14 @@ public class WebSecurityConfig {
                                 .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/seller/**").hasAnyRole("ADMIN","SELLER")
+                                .requestMatchers("/api/user/**").hasAnyRole("ADMIN","SELLER","USER")
+                                .requestMatchers("/api/chat/**").hasAnyRole("ADMIN","SELLER","USER")
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/api/public/**").permitAll()
                                 //.requestMatchers("/api/admin/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
+                                .requestMatchers("/ws/chat/**").permitAll()
                                 .anyRequest().authenticated()) //cac api khac phai co jwt hop le
                 .cors(); // Enable CORS with the configuration from WebConfig
         http.authenticationProvider(authenticationProvider());
@@ -133,19 +136,19 @@ public class WebSecurityConfig {
                     });
 
             // Create users if not already present
-            if (!userRepository.existsByUserName("user1")) {
+            if (!userRepository.existsByUserName("user1") && !userRepository.existsByEmail("user1@example.com")) {
                 User user1 = new User("user1", "user1@example.com", passwordEncoder.encode("password1"));
                 user1.getRoles().add(userRole);
                 userRepository.save(user1);
             }
 
-            if (!userRepository.existsByUserName("seller1")) {
+            if (!userRepository.existsByUserName("seller1") && !userRepository.existsByEmail("seller1@example.com")) {
                 User seller1 = new User("seller1", "seller1@example.com", passwordEncoder.encode("password2"));
                 seller1.getRoles().add(sellerRole);
                 userRepository.save(seller1);
             }
 
-            if (!userRepository.existsByUserName("admin")) {
+            if (!userRepository.existsByUserName("admin") && !userRepository.existsByEmail("admin@example.com")) {
                 User admin = new User("admin", "admin@example.com", passwordEncoder.encode("adminPass"));
                 admin.getRoles().add(userRole);
                 admin.getRoles().add(sellerRole);

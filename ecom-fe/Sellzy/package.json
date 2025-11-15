@@ -19,8 +19,10 @@
     "@stripe/react-stripe-js": "^5.3.0",
     "@stripe/stripe-js": "^8.2.0",
     "@tailwindcss/vite": "^4.1.14",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.12.2",
     "classnames": "^2.5.1",
+    "dayjs": "^1.11.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.65.0",
@@ -31,6 +33,7 @@
     "react-router-dom": "^7.9.3",
     "react-slider": "^2.0.6",
     "react-spinners": "^0.17.0",
+    "sockjs-client": "^1.6.1",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {

@@ -24,10 +24,16 @@ public class Order {
     @Column(nullable = false)
     private String email;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDate orderDate;
+
+    private java.time.LocalDateTime placedAt;
 
     @OneToOne
     @JoinColumn(name = "payment_id")

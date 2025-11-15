@@ -15,23 +15,25 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
         price,
         discount,
         specialPrice,
-        rating = 4,
-        reviewCount = 0,
-        seller = "Unknown Seller",
+        averageRating = 0,
+        ratingCount = 0,
+        sellerName = "Unknown Seller",
         trustScore = 85,
         trustLevel = "Very Good",
     } = product
 
+    const ratingValue = Number(averageRating) || 0;
+
     const renderStars = () => {
         const stars = []
         for (let i = 1; i <= 5; i++) {
-            if (i <= Math.floor(rating)) {
+            if (i <= Math.floor(ratingValue)) {
                 stars.push(
                     <span key={i} className="text-yellow-400 text-xl">
                         ★
                     </span>,
                 )
-            } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
+            } else if (i === Math.ceil(ratingValue) && ratingValue % 1 !== 0) {
                 stars.push(
                     <span key={i} className="text-yellow-400 text-xl">
                         ★
@@ -58,7 +60,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
     const trustColors = getTrustScoreColor(trustScore)
 
     return (
-        <Dialog open={open} as="div" className="relative z-10" onClose={() => setOpen(false)}>
+        <Dialog open={open} as="div" className="relative z-[70]" onClose={() => setOpen(false)}>
             <DialogBackdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300" />
 
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -85,7 +87,9 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
 
                             <div className="flex items-center gap-2 mb-4">
                                 <div className="flex items-center">{renderStars()}</div>
-                                <span className="text-sm text-gray-600">({reviewCount})</span>
+                                <span className="text-sm text-gray-600">
+                                    {ratingValue.toFixed(1)} • {ratingCount} review{ratingCount === 1 ? "" : "s"}
+                                </span>
                             </div>
 
                             <div className="space-y-4 text-gray-700 pb-6">
@@ -106,7 +110,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                                     )}
                                 </div>
 
-                                <p className="text-sm text-blue-600 font-medium">by {seller}</p>
+                                <p className="text-sm text-blue-600 font-medium">by {sellerName}</p>
 
                                 {/* <div className={`p-4 rounded-lg ${trustColors.bg}`}>
                                     <div className="flex items-center justify-between mb-2">

@@ -7,10 +7,19 @@ import { paymentMethodReducer } from "./paymentMethodReducer";
 import { adminReducer } from "./adminReducer";
 import { orderReducer } from "./orderReducer";
 import { sellerReducer } from "./sellerReducer";
+import api from "../../api/api";
+import { extractJwtFromCookie as extractJwtFromCookieUtil } from "../utils/authHelpers";
 
 const user = localStorage.getItem("auth")
     ? JSON.parse(localStorage.getItem("auth"))
     : null;
+
+if (user?.jwtToken) {
+    const token = extractJwtFromCookieUtil(user.jwtToken);
+    if (token) {
+        api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+}
 
 const cartItems = localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))

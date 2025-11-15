@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import api from "../../api/api";
+import { extractJwtFromCookie } from "../utils/authHelpers";
 
 export const fetchProducts = (queryString, categoryId) => async (dispatch) => {
 
@@ -41,10 +42,13 @@ export const fetchProducts = (queryString, categoryId) => async (dispatch) => {
 export const addToCart = (data, qty = 1, toast) => (dispatch, getState) => {
 
     const { products } = getState().products;
-    const getProduct = products.find(item => item.productId === data.productId);
+    const getProduct = Array.isArray(products)
+        ? products.find(item => item.productId === data.productId)
+        : null;
+    const referenceProduct = getProduct || data;
+    const availableQuantity = Number(referenceProduct?.quantity ?? 0);
 
-    // Check for stock
-    const isQuantityExisted = getProduct.quantity >= qty;
+    const isQuantityExisted = availableQuantity >= qty;
 
     if (isQuantityExisted) {
         dispatch({
@@ -136,8 +140,12 @@ export const authenticateSignInUser
         try {
             setLoader(true);
             const { data } = await api.post("/auth/signin", sendData);
+            if (data?.jwtToken) {
+                api.defaults.headers.common.Authorization = `Bearer ${extractJwtFromCookie(data.jwtToken)}`;
+            }
             dispatch({ type: "LOGIN_USER", payload: data })
             localStorage.setItem("auth", JSON.stringify(data));
+            await dispatch(refreshUserProfile());
             reset()
             toast.success("Login success");
             navigate("/")
@@ -148,6 +156,21 @@ export const authenticateSignInUser
             setLoader(false);
         }
     }
+
+export const refreshUserProfile = () => async (dispatch) => {
+    try {
+        const { data } = await api.get("/user/profile");
+        dispatch({ type: "UPDATE_PROFILE", payload: { ...data, avatarUrl: data.avatarUrl } });
+        const cached = localStorage.getItem("auth");
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            const updated = { ...parsed, ...data };
+            localStorage.setItem("auth", JSON.stringify(updated));
+        }
+    } catch (error) {
+        console.error("Failed to refresh profile", error);
+    }
+};
 
 export const registerNewUser
     = (sendData, toast, reset, navigate, setLoader) => async (dispatch) => {
@@ -168,6 +191,7 @@ export const registerNewUser
 export const logOutUser = (navigate) => (dispatch) => {
     dispatch({ type: "LOG_OUT" });
     localStorage.removeItem("auth");
+    delete api.defaults.headers.common.Authorization;
     navigate("/login");
 };
 

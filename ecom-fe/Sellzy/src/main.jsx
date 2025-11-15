@@ -4,10 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store from './store/reducers/store.js'
-import { BrowserRouter } from 'react-router-dom'
+import { ChatProvider } from './context/ChatContext.jsx'
+
+if (typeof window !== 'undefined') {
+  window.global = window
+}
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <App />
+    <ChatProvider>
+      <App />
+    </ChatProvider>
   </Provider>
 )

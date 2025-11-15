@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import ProductViewModal from "./ProductViewModal";
 import truncateText from "../../utils/truncateText";
@@ -16,15 +17,15 @@ const ProductCard = ({
     price,
     discount,
     specialPrice,
-    rating = 4,
-    reviewCount = 0,
-    seller = "Unknown Seller",
+    averageRating = 0,
+    ratingCount = 0,
+    sellerName = "Unknown Seller",
     trustScore = 85,
     trustLevel = "Very Good",
 }) => {
     const [openProductViewModal, setOpenProductViewModal] = useState(false)
     const btnLoader = false
-    const [selectedViewProduct, setSelectedViewProduct] = useState("")
+    const [selectedViewProduct, setSelectedViewProduct] = useState({})
     const isAvailable = quantity && Number(quantity) > 0
     const dispatch = useDispatch()
 
@@ -46,16 +47,18 @@ const ProductCard = ({
 
     const trustColors = getTrustScoreColor(trustScore)
 
+    const ratingValue = Number(averageRating) || 0;
+
     const renderStars = () => {
         const stars = []
         for (let i = 1; i <= 5; i++) {
-            if (i <= Math.floor(rating)) {
+            if (i <= Math.floor(ratingValue)) {
                 stars.push(
                     <span key={i} className="text-yellow-400">
                         ★
                     </span>,
                 )
-            } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
+            } else if (i === Math.ceil(ratingValue) && ratingValue % 1 !== 0) {
                 stars.push(
                     <span key={i} className="text-yellow-400">
                         ★
@@ -85,9 +88,9 @@ const ProductCard = ({
                         price,
                         discount,
                         specialPrice,
-                        rating,
-                        reviewCount,
-                        seller,
+                        averageRating,
+                        ratingCount,
+                        sellerName,
                         trustScore,
                         trustLevel,
                     })
@@ -119,9 +122,9 @@ const ProductCard = ({
                             price,
                             discount,
                             specialPrice,
-                            rating,
-                            reviewCount,
-                            seller,
+                        averageRating,
+                        ratingCount,
+                        sellerName,
                             trustScore,
                             trustLevel,
                         })
@@ -140,7 +143,9 @@ const ProductCard = ({
 
                 <div className="flex items-center gap-1">
                     <div className="flex items-center">{renderStars()}</div>
-                    <span className="text-sm text-gray-600">({reviewCount})</span>
+                    <span className="text-sm text-gray-600">
+                        {ratingValue.toFixed(1)} • {ratingCount} review{ratingCount === 1 ? "" : "s"}
+                    </span>
                 </div>
 
                 <div className="flex items-baseline gap-2">
@@ -154,7 +159,7 @@ const ProductCard = ({
                     )}
                 </div>
 
-                {/* <p className="text-sm text-blue-600">by {seller}</p>
+                {/* <p className="text-sm text-blue-600">by {sellerName}</p>
 
                 <div className={`flex items-center gap-2 p-2 rounded-lg ${trustColors.bg}`}>
                     <div className="flex items-center gap-1">
@@ -178,22 +183,30 @@ const ProductCard = ({
                     </div>
                 </div> */}
 
-                <button
-                    disabled={!isAvailable || btnLoader}
-                    onClick={() => handleAddToCart({
-                        image,
-                        productName,
-                        description,
-                        specialPrice,
-                        price,
-                        productId,
-                        quantity
-                    })}
-                    className={`${isAvailable ? "bg-yellow-400 hover:bg-yellow-500 cursor-pointer" : "bg-gray-300 opacity-70"
-                        } text-gray-900 py-3 px-4 rounded-lg w-full font-bold text-sm transition-all duration-300`}
-                >
-                    {isAvailable ? "Add to Cart" : "Out of Stock"}
-                </button>
+                <div className="flex flex-col gap-2">
+                    <button
+                        disabled={!isAvailable || btnLoader}
+                        onClick={() => handleAddToCart({
+                            image,
+                            productName,
+                            description,
+                            specialPrice,
+                            price,
+                            productId,
+                            quantity
+                        })}
+                        className={`${isAvailable ? "bg-yellow-400 hover:bg-yellow-500 cursor-pointer" : "bg-gray-300 opacity-70"
+                            } text-gray-900 py-3 px-4 rounded-lg w-full font-bold text-sm transition-all duration-300`}
+                    >
+                        {isAvailable ? "Add to Cart" : "Out of Stock"}
+                    </button>
+                    <Link
+                        to={`/products/${productId}`}
+                        className="text-center text-sm font-semibold text-blue-600 hover:text-blue-500 transition"
+                    >
+                        View details
+                    </Link>
+                </div>
             </div>
 
             <ProductViewModal

@@ -8,6 +8,7 @@ import com.ecommerce.project.model.Product;
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.CartDTO;
 import com.ecommerce.project.payload.ProductDTO;
+import com.ecommerce.project.payload.ProductDetailResponse;
 import com.ecommerce.project.payload.ProductResponse;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.CategoryRepository;
@@ -78,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
                     ((product.getDiscount() * 0.01) * product.getPrice());
             product.setSpecialPrice(specialPrice);
             Product savedProduct = productRepository.save(product);
-            return modelMapper.map(savedProduct, ProductDTO.class);
+            return mapProductToDto(savedProduct);
         }
         else {
             throw new APIException("Product already exist");
@@ -109,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = pageProducts.getContent();
 
         List<ProductDTO> productDTOS = products.stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .map(this::mapProductToDto)
                 .toList();
 
         ProductResponse productResponse = new ProductResponse();
@@ -145,11 +146,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         List<ProductDTO> productDTOS = products.stream()
-                .map(product -> {
-                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-                    productDTO.setImage(constructImageUrl(product.getImage()));
-                    return productDTO;
-                })
+                .map(this::mapProductToDto)
                 .toList();
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDTOS);
@@ -173,7 +170,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<Product> products = pageProducts.getContent();
         List<ProductDTO> productDTOS = products.stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .map(this::mapProductToDto)
                 .toList();
 
         if(products.isEmpty()) {
@@ -211,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
         List<CartDTO> cartDTOS = carts.stream().map(cart -> {
             CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
             List<ProductDTO> products = cart.getCartItems().stream()
-                    .map(p -> modelMapper.map(p.getProduct(),ProductDTO.class))
+                    .map(cartItem -> mapProductToDto(cartItem.getProduct()))
                     .toList();
             cartDTO.setProducts(products);
             return cartDTO;
@@ -219,7 +216,7 @@ public class ProductServiceImpl implements ProductService {
 
         cartDTOS.forEach(cart -> cartService.updateProductInCarts(cart.getCartId(),productId));
 
-        return modelMapper.map(savedProduct, ProductDTO.class);
+        return mapProductToDto(savedProduct);
     }
 
     @Override
@@ -231,7 +228,7 @@ public class ProductServiceImpl implements ProductService {
         carts.forEach(cart -> cartService.deleteProductFromCart(cart.getCartId(), productId));
 
         productRepository.delete(product);
-        return modelMapper.map(product, ProductDTO.class);
+        return mapProductToDto(product);
     }
 
     @Override
@@ -242,7 +239,7 @@ public class ProductServiceImpl implements ProductService {
         String fileName = fileService.uploadImage(path, image);
         productFromDB.setImage(fileName);
         Product updatedProduct = productRepository.save(productFromDB);
-        return  modelMapper.map(updatedProduct, ProductDTO.class);
+        return  mapProductToDto(updatedProduct);
     }
 
     @Override
@@ -257,11 +254,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = pageProducts.getContent();
 
         List<ProductDTO> productDTOS = products.stream()
-                .map(product -> {
-                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-                    productDTO.setImage(constructImageUrl(product.getImage()));
-                    return productDTO;
-                })
+                .map(this::mapProductToDto)
                 .toList();
 
         ProductResponse productResponse = new ProductResponse();
@@ -288,11 +281,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = pageProducts.getContent();
 
         List<ProductDTO> productDTOS = products.stream()
-                .map(product -> {
-                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-                    productDTO.setImage(constructImageUrl(product.getImage()));
-                    return productDTO;
-                })
+                .map(this::mapProductToDto)
                 .toList();
 
         ProductResponse productResponse = new ProductResponse();
@@ -303,6 +292,49 @@ public class ProductServiceImpl implements ProductService {
         productResponse.setTotalPages(pageProducts.getTotalPages());
         productResponse.setLastPage(pageProducts.isLast());
         return productResponse;
+    }
+
+    private ProductDTO mapProductToDto(Product product) {
+        if (product == null) {
+            return null;
+        }
+        ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+        String imageName = product.getImage();
+        dto.setImage(imageName != null ? constructImageUrl(imageName) : null);
+        dto.setAverageRating(product.getAverageRating() != null ? product.getAverageRating() : 0.0);
+        dto.setRatingCount(product.getRatingCount() != null ? product.getRatingCount() : 0);
+        User owner = product.getUser();
+        dto.setSellerName(owner != null ? owner.getUserName() : null);
+        return dto;
+    }
+
+    @Override
+    public ProductDetailResponse getProductDetail(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        Category category = product.getCategory();
+        User seller = product.getUser();
+
+        return ProductDetailResponse.builder()
+                .productId(product.getProductId())
+                .productName(product.getProductName())
+                .description(product.getDescription())
+                .quantity(product.getQuantity())
+                .price(product.getPrice())
+                .discount(product.getDiscount())
+                .specialPrice(product.getSpecialPrice())
+                .image(constructImageUrl(product.getImage()))
+                .categoryId(category != null ? category.getCategoryId() : null)
+                .categoryName(category != null ? category.getCategoryName() : null)
+                .averageRating(product.getAverageRating())
+                .ratingCount(product.getRatingCount())
+                .sellerId(seller != null ? seller.getUserId() : null)
+                .sellerName(seller != null ? seller.getUserName() : null)
+                .sellerEmail(seller != null ? seller.getEmail() : null)
+                .sellerAvatarUrl(seller != null ? seller.getAvatarUrl() : null)
+                .sellerHeadline(seller != null ? seller.getSellerHeadline() : null)
+                .build();
     }
 
 }

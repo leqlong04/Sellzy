@@ -66,9 +66,11 @@ public class OrderServiceImpl implements  OrderService{
         //create a new order with payment infor
         Order order = new Order();
         order.setEmail(emailId);
+        order.setUser(authUtil.loggedInUser());
         order.setOrderDate(LocalDate.now());
+        order.setPlacedAt(java.time.LocalDateTime.now());
         order.setTotalAmount(cart.getTotalPrice());
-        order.setOrderStatus("Accepted");
+        order.setOrderStatus("PENDING");
         order.setAddress(address);
 
         Payment payment = new Payment(paymentMethod,pgPaymentId,pgStatus,pgResponseMessage,pgName);

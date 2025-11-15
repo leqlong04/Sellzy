@@ -33,6 +33,12 @@ public class Product {
     private double discount;
     private double specialPrice; //gia sau khi discount
 
+    @Column(name = "average_rating")
+    private Double averageRating = 0.0;
+
+    @Column(name = "rating_count")
+    private Integer ratingCount = 0;
+
     @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
@@ -43,4 +49,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<CartItem> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductReview> reviews = new ArrayList<>();
 }

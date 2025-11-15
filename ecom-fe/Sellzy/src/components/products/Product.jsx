@@ -20,28 +20,28 @@ export default function Page() {
     useEffect(() => {
         const selectedCategories = searchParams.get("categories")?.split(",") || [];
         const currentPage = searchParams.get("page") || "1";
+        const keyword = searchParams.get("search") || "";
 
-        // Build query string với pagination
         const queryParams = new URLSearchParams();
-        queryParams.set("pageNumber", (parseInt(currentPage) - 1).toString()); // Backend pageNumber bắt đầu từ 0
+        queryParams.set("pageNumber", (parseInt(currentPage) - 1).toString());
         queryParams.set("pageSize", "10");
+        if (keyword) {
+            queryParams.set("keyword", keyword);
+        }
 
         const queryString = queryParams.toString();
 
-        // Nếu có category được chọn, lấy categoryId đầu tiên
         if (selectedCategories.length > 0 && categories) {
             const selectedCategory = categories.find(
                 cat => cat.categoryName === selectedCategories[0]
             );
 
             if (selectedCategory) {
-                // Gọi API lấy products theo category với categoryId và pagination
                 dispatch(fetchProducts(queryString, selectedCategory.categoryId));
                 return;
             }
         }
 
-        // Nếu không có category, lấy tất cả products với pagination
         dispatch(fetchProducts(queryString));
     }, [dispatch, searchParams, categories]);
 
