@@ -1,0 +1,29 @@
+name: "ecom_recommendation_dbt"
+version: "1.0.0"
+config-version: 2
+
+profile: "ecom_recommendation"
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  ecom_recommendation_dbt:
+    +materialized: table
+    +persist_docs: {"relation": true, "columns": true}
+    staging:
+      +materialized: view
+      +tags: ["recommendation", "staging"]
+    marts:
+      +materialized: table
+      +tags: ["recommendation", "marts"]
+

@@ -12,6 +12,7 @@ import com.ecommerce.project.payload.ProductDetailResponse;
 import com.ecommerce.project.payload.ProductResponse;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.CategoryRepository;
+import com.ecommerce.project.repositories.OrderItemRepository;
 import com.ecommerce.project.repositories.ProductRepository;
 import com.ecommerce.project.util.AuthUtil;
 import org.modelmapper.ModelMapper;
@@ -42,6 +43,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -315,6 +319,7 @@ public class ProductServiceImpl implements ProductService {
 
         Category category = product.getCategory();
         User seller = product.getUser();
+        Integer unitsSold = orderItemRepository.sumQuantitySoldByProductId(productId);
 
         return ProductDetailResponse.builder()
                 .productId(product.getProductId())
@@ -334,6 +339,7 @@ public class ProductServiceImpl implements ProductService {
                 .sellerEmail(seller != null ? seller.getEmail() : null)
                 .sellerAvatarUrl(seller != null ? seller.getAvatarUrl() : null)
                 .sellerHeadline(seller != null ? seller.getSellerHeadline() : null)
+                .unitsSold(unitsSold != null ? unitsSold : 0)
                 .build();
     }
 

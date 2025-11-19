@@ -1,0 +1,16 @@
+# Copy this file to ~/.dbt/profiles.yml (Linux/macOS) or
+# %USERPROFILE%\.dbt\profiles.yml (Windows) and adjust credentials as needed.
+
+ecom_recommendation:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('ECOM_DB_HOST', 'localhost') }}"
+      port: !!int "{{ env_var('ECOM_DB_PORT', '5432') }}"
+      dbname: "{{ env_var('ECOM_DB_NAME', 'ecommerce') }}"
+      user: "{{ env_var('ECOM_DB_USER', 'postgres') }}"
+      password: "{{ env_var('ECOM_DB_PASSWORD', 'lequanglong2012') }}"
+      schema: public
+      threads: !!int "{{ env_var('ECOM_DBT_THREADS', '4') }}"
+

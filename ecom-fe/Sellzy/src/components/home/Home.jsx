@@ -1,18 +1,18 @@
 
 
 import { Link } from "react-router-dom"
+import { useEffect, useMemo, useState } from "react"
 import ProductCard from "../shared/ProductCard"
 import Navbar from "../shared/Navbar"
+import HomeRecommendations from "./HomeRecommendations"
+import HomeDeals from "./HomeDeals"
+import HomeRecentlyViewed from "./HomeRecentlyViewed"
+import { useSelector } from "react-redux"
+import { fetchCategories, fetchTrendingProducts } from "../../api/products"
 import {
     FaShoppingCart,
     FaShieldAlt,
     FaHeadset,
-    FaMobileAlt,
-    FaTshirt,
-    FaHome,
-    FaFootballBall,
-    FaBook,
-    FaSpa,
     FaCheckCircle,
     FaClipboardList,
     FaComments,
@@ -20,8 +20,7 @@ import {
     FaArrowRight,
 } from "react-icons/fa"
 
-export default function HomePage() {
-    const featuredProducts = [
+const FALLBACK_TRENDING_PRODUCTS = [
         {
             productId: 1,
             productName: "Wireless Bluetooth Headphones",
@@ -84,14 +83,91 @@ export default function HomePage() {
         },
     ]
 
-    const categories = [
-        { name: "Electronics", icon: FaMobileAlt, count: "2,500+ products", color: "from-blue-500 to-cyan-500" },
-        { name: "Clothing", icon: FaTshirt, count: "5,000+ products", color: "from-pink-500 to-rose-500" },
-        { name: "Home & Garden", icon: FaHome, count: "3,200+ products", color: "from-green-500 to-emerald-500" },
-        { name: "Sports", icon: FaFootballBall, count: "1,800+ products", color: "from-orange-500 to-amber-500" },
-        { name: "Books", icon: FaBook, count: "4,500+ products", color: "from-purple-500 to-violet-500" },
-        { name: "Beauty", icon: FaSpa, count: "2,100+ products", color: "from-red-500 to-pink-500" },
+export default function HomePage() {
+    const { user } = useSelector((state) => state.auth)
+
+    const [categories, setCategories] = useState([])
+    const [categoriesLoading, setCategoriesLoading] = useState(true)
+    const [categoriesError, setCategoriesError] = useState(null)
+    const [categoriesVersion, setCategoriesVersion] = useState(0)
+
+    const [trendingProducts, setTrendingProducts] = useState([])
+    const [trendingLoading, setTrendingLoading] = useState(true)
+    const [trendingError, setTrendingError] = useState(null)
+    const [trendingVersion, setTrendingVersion] = useState(0)
+
+    useEffect(() => {
+        let active = true
+        const loadCategories = async () => {
+            setCategoriesLoading(true)
+            setCategoriesError(null)
+            try {
+                const data = await fetchCategories({ pageSize: 6 })
+                if (!active) return
+                setCategories(data?.content || [])
+            } catch (error) {
+                if (!active) return
+                setCategoriesError(error?.response?.data?.message || "Unable to load categories")
+                setCategories([])
+            } finally {
+                if (active) setCategoriesLoading(false)
+            }
+        }
+        loadCategories()
+        return () => {
+            active = false
+        }
+    }, [categoriesVersion])
+
+    useEffect(() => {
+        let active = true
+        const loadTrending = async () => {
+            setTrendingLoading(true)
+            setTrendingError(null)
+            try {
+                const data = await fetchTrendingProducts({ pageSize: 12, sortBy: "ratingCount", sortOrder: "desc" })
+                if (!active) return
+                setTrendingProducts(data?.content || [])
+            } catch (error) {
+                if (!active) return
+                setTrendingError(error?.response?.data?.message || "Unable to load trending products")
+                setTrendingProducts([])
+            } finally {
+                if (active) setTrendingLoading(false)
+            }
+        }
+        loadTrending()
+        return () => {
+            active = false
+        }
+    }, [trendingVersion])
+
+    const displayTrendingProducts = useMemo(() => {
+        if (trendingProducts.length) {
+            return trendingProducts
+        }
+        if (!trendingLoading && !trendingError) {
+            return FALLBACK_TRENDING_PRODUCTS
+        }
+        return []
+    }, [trendingProducts, trendingLoading, trendingError])
+
+    const topDeals = useMemo(
+        () => displayTrendingProducts.filter((product) => (product.discount || 0) > 0).slice(0, 8),
+        [displayTrendingProducts]
+    )
+
+    const gradientPalette = [
+        "from-indigo-500 via-purple-500 to-pink-500",
+        "from-rose-500 via-red-500 to-orange-500",
+        "from-blue-500 via-cyan-500 to-teal-500",
+        "from-emerald-500 via-green-500 to-lime-500",
+        "from-amber-500 via-orange-500 to-yellow-500",
+        "from-fuchsia-500 via-purple-500 to-indigo-500",
     ]
+
+    const reloadCategories = () => setCategoriesVersion((prev) => prev + 1)
+    const reloadTrending = () => setTrendingVersion((prev) => prev + 1)
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
@@ -112,11 +188,21 @@ export default function HomePage() {
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center max-w-4xl mx-auto">
                         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight text-balance drop-shadow-lg">
-                            Shop with confidence using <span className="text-yellow-300">AI-powered trust scores</span>
+                            {user ? (
+                                <>
+                                    Welcome back,{" "}
+                                    <span className="text-yellow-300">{user.userName}</span>. Discover picks chosen for you
+                                </>
+                            ) : (
+                                <>
+                                    Shop with confidence using <span className="text-yellow-300">AI-powered trust scores</span>
+                                </>
+                            )}
                         </h1>
                         <p className="text-xl text-white/90 mb-8 leading-relaxed text-pretty max-w-2xl mx-auto drop-shadow">
-                            Discover authentic products from verified sellers. Our AI analyzes seller history, product authenticity,
-                            and review quality to help you make informed decisions.
+                            {user
+                                ? "Here’s what other shoppers with similar tastes are buying today."
+                                : "Discover authentic products from verified sellers. Our AI analyzes seller history, product authenticity, and review quality to help you make informed decisions."}
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Link
@@ -125,9 +211,15 @@ export default function HomePage() {
                             >
                                 <FaShoppingCart /> Browse Products
                             </Link>
-                            <button className="border-2 border-white text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-white hover:text-purple-600 transition-all w-full sm:w-auto">
-                                Learn More
-                            </button>
+                            {user ? (
+                                <button className="border-2 border-white text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-white hover:text-purple-600 transition-all w-full sm:w-auto">
+                                    Continue shopping
+                                </button>
+                            ) : (
+                                <button className="border-2 border-white text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-white hover:text-purple-600 transition-all w-full sm:w-auto">
+                                    Learn More
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -162,34 +254,65 @@ export default function HomePage() {
 
             <section id="categories" className="py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-                            Shop by Category
-                        </h2>
-                        <p className="text-lg text-gray-600">Explore our wide range of product categories</p>
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
+                        <div className="text-left">
+                            <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                                Shop by Category
+                            </h2>
+                            <p className="text-lg text-gray-600">Explore our most-loved collections</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            {categoriesError && (
+                                <span className="text-sm text-rose-500 hidden sm:inline">
+                                    {categoriesError}
+                                </span>
+                            )}
+                            <button
+                                type="button"
+                                onClick={reloadCategories}
+                                className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-500"
+                            >
+                                Refresh
+                            </button>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                        {categories.map((category, index) => {
-                            const Icon = category.icon
-                            return (
-                                <Link
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+                        {categoriesLoading
+                            ? Array.from({ length: 6 }).map((_, index) => (
+                                <div
                                     key={index}
-                                    to="/products"
-                                    className="bg-white rounded-2xl p-6 text-center hover:shadow-2xl transition-all duration-300 group border-2 border-transparent hover:border-purple-300 relative overflow-hidden"
-                                >
-                                    <div
-                                        className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity`}
-                                    ></div>
-                                    <div
-                                        className={`relative bg-gradient-to-br ${category.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform shadow-lg`}
-                                    >
-                                        <Icon className="w-8 h-8 text-white" />
+                                    className="h-40 rounded-3xl bg-slate-100 animate-pulse"
+                                ></div>
+                            ))
+                            : categories.length > 0
+                                ? categories.map((category, index) => {
+                                    const gradient = gradientPalette[index % gradientPalette.length]
+                                    return (
+                                        <Link
+                                            key={category.categoryId}
+                                            to={`/products?categories=${encodeURIComponent(category.categoryName)}`}
+                                            className={`relative overflow-hidden rounded-3xl p-6 text-white bg-gradient-to-br ${gradient} shadow-lg hover:shadow-2xl transition-all`}
+                                        >
+                                            <div className="absolute inset-0 opacity-20 bg-white blur-3xl"></div>
+                                            <div className="relative space-y-4">
+                                                <p className="text-xs uppercase tracking-[0.3em] text-white/80">
+                                                    Category
+                                                </p>
+                                                <h3 className="text-2xl font-semibold leading-tight">
+                                                    {category.categoryName}
+                                                </h3>
+                                                <span className="inline-flex items-center gap-2 text-sm font-semibold text-white/90">
+                                                    Explore <FaArrowRight className="w-3 h-3" />
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    )
+                                })
+                                : (
+                                    <div className="col-span-full text-center text-sm text-slate-500">
+                                        {categoriesError || "No categories available yet."}
                                     </div>
-                                    <h3 className="font-semibold text-gray-800 mb-1">{category.name}</h3>
-                                    <p className="text-xs text-gray-500">{category.count}</p>
-                                </Link>
-                            )
-                        })}
+                                )}
                     </div>
                 </div>
             </section>
@@ -282,27 +405,60 @@ export default function HomePage() {
                 </div>
             </section>
 
+            <HomeRecommendations />
+            <HomeDeals
+                items={topDeals}
+                loading={trendingLoading}
+                error={trendingError}
+                onRetry={reloadTrending}
+            />
+            <HomeRecentlyViewed />
+
             <section className="py-20 bg-white/50 backdrop-blur-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between mb-12">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
                         <div>
                             <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
                                 Trending Products
                             </h2>
-                            <p className="text-lg text-gray-600">Discover our most popular items</p>
+                            <p className="text-lg text-gray-600">Discover what shoppers love right now</p>
                         </div>
-                        <Link
-                            to="/products"
-                            className="hidden md:flex items-center gap-2 text-purple-600 font-semibold hover:gap-3 transition-all"
-                        >
-                            View All <FaArrowRight />
-                        </Link>
+                        <div className="flex items-center gap-3">
+                            {trendingError && (
+                                <span className="text-sm text-rose-500 hidden sm:inline">{trendingError}</span>
+                            )}
+                            <button
+                                type="button"
+                                onClick={reloadTrending}
+                                className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-500"
+                            >
+                                Refresh
+                            </button>
+                            <Link
+                                to="/products"
+                                className="hidden md:inline-flex items-center gap-2 text-purple-600 font-semibold hover:gap-3 transition-all"
+                            >
+                                View All <FaArrowRight />
+                            </Link>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {featuredProducts.map((product) => (
-                            <ProductCard key={product.productId} {...product} />
-                        ))}
-                    </div>
+                    {trendingLoading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {Array.from({ length: 4 }).map((_, index) => (
+                                <div key={index} className="h-72 rounded-3xl bg-slate-100 animate-pulse"></div>
+                            ))}
+                        </div>
+                    ) : displayTrendingProducts.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {displayTrendingProducts.slice(0, 8).map((product) => (
+                                <ProductCard key={product.productId} {...product} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-sm text-slate-500 text-center">
+                            {trendingError || "No trending products right now."}
+                        </div>
+                    )}
                     <div className="text-center mt-8 md:hidden">
                         <Link
                             to="/products"

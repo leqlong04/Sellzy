@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: public
+    tables:
+      - name: orders
+        description: "Customer orders from the ecommerce application"
+      - name: order_items
+        description: "Line items that belong to each order"
+      - name: products
+        description: "Product catalog metadata"
+

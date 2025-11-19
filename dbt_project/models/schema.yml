@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_order_items
+    description: "Staging view that joins orders, order_items và products để chuẩn hóa dữ liệu giao dịch."
+    columns:
+      - name: order_id
+        tests: [not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: product_name
+        tests: [not_null]
+
+  - name: transaction_fpgrowth
+    description: "Bảng đầu vào cho FP-Growth: mỗi dòng là một giao dịch và danh sách sản phẩm."
+    columns:
+      - name: transaction_id
+        tests:
+          - not_null
+          - unique
+      - name: items
+        tests:
+          - not_null
+
+  - name: user_item_dl
+    description: "Bảng tương tác user-item phục vụ huấn luyện NCF."
+    columns:
+      - name: user_id
+        tests: [not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: product_name
+        tests: [not_null]
+

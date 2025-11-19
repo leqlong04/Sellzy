@@ -2,15 +2,25 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { fetchProductDetail, fetchProductReviews } from "../../api/products";
+import {
+  fetchProductDetail,
+  fetchProductReviews,
+  fetchProductRecommendations,
+} from "../../api/products";
 import getImageUrl from "../../utils/getImageUrl";
 import { addToCart } from "../../store/actions";
+import ProductRecommendations from "./ProductRecommendations";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [recommendations, setRecommendations] = useState([]);
+  const [recommendationsLoading, setRecommendationsLoading] = useState(true);
+  const [recommendationsError, setRecommendationsError] = useState(null);
+  const [recommendationsFallback, setRecommendationsFallback] = useState(false);
+  const [recommendationsVersion, setRecommendationsVersion] = useState(0);
 
   useEffect(() => {
     const load = async () => {
@@ -66,6 +76,39 @@ const ProductDetail = () => {
     loadReviews();
   }, [productId]);
 
+  useEffect(() => {
+    if (!productId) return;
+    let active = true;
+    const loadRecommendations = async () => {
+      setRecommendationsLoading(true);
+      setRecommendationsError(null);
+      try {
+        const data = await fetchProductRecommendations(productId);
+        if (!active) return;
+        setRecommendations(data.recommendations || []);
+        setRecommendationsFallback(Boolean(data.fallback));
+      } catch (error) {
+        console.error(error);
+        if (!active) return;
+        setRecommendations([]);
+        setRecommendationsError(
+          error?.response?.data?.message || "Unable to load recommendations"
+        );
+      } finally {
+        if (active) {
+          setRecommendationsLoading(false);
+        }
+      }
+    };
+    loadRecommendations();
+    return () => {
+      active = false;
+    };
+  }, [productId, recommendationsVersion]);
+
+  const handleRefreshRecommendations = () =>
+    setRecommendationsVersion((prev) => prev + 1);
+
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-16">
@@ -95,6 +138,26 @@ const ProductDetail = () => {
 
   const finalPrice = product.specialPrice || product.price;
   const hasDiscount = product.discount > 0;
+  const unitsSold = product.unitsSold ?? 0;
+
+  useEffect(() => {
+    if (!product) return;
+    try {
+      const entry = {
+        productId: product.productId,
+        productName: product.productName,
+        image: product.image,
+        price: Number(finalPrice),
+      };
+      const key = "recently_viewed_products";
+      const existing = JSON.parse(localStorage.getItem(key) || "[]")
+        .filter((item) => item.productId !== entry.productId);
+      existing.unshift(entry);
+      localStorage.setItem(key, JSON.stringify(existing.slice(0, 12)));
+    } catch (storageError) {
+      console.error("Failed to persist recently viewed products", storageError);
+    }
+  }, [product?.productId, finalPrice, product]);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
@@ -143,6 +206,8 @@ const ProductDetail = () => {
                 </span>
                 <span>•</span>
                 <span>{product.quantity} available</span>
+                <span>•</span>
+                <span>{unitsSold} sold</span>
               </div>
             </div>
 
@@ -193,6 +258,14 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
+
+        <ProductRecommendations
+          items={recommendations}
+          loading={recommendationsLoading}
+          error={recommendationsError}
+          fallback={recommendationsFallback}
+          onRetry={handleRefreshRecommendations}
+        />
 
         <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-8 space-y-6">
           <div>

@@ -18,6 +18,7 @@ public class ProductDetailResponse {
     String categoryName;
     Double averageRating;
     Integer ratingCount;
+    Integer unitsSold;
     Long sellerId;
     String sellerName;
     String sellerEmail;
