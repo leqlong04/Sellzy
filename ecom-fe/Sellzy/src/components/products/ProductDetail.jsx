@@ -109,6 +109,25 @@ const ProductDetail = () => {
   const handleRefreshRecommendations = () =>
     setRecommendationsVersion((prev) => prev + 1);
 
+  useEffect(() => {
+    if (!product) return;
+    try {
+      const entry = {
+        productId: product.productId,
+        productName: product.productName,
+        image: product.image,
+        price: Number(product.specialPrice || product.price),
+      };
+      const key = "recently_viewed_products";
+      const existing = JSON.parse(localStorage.getItem(key) || "[]")
+        .filter((item) => item.productId !== entry.productId);
+      existing.unshift(entry);
+      localStorage.setItem(key, JSON.stringify(existing.slice(0, 12)));
+    } catch (storageError) {
+      console.error("Failed to persist recently viewed products", storageError);
+    }
+  }, [product]);
+
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-16">
@@ -139,25 +158,6 @@ const ProductDetail = () => {
   const finalPrice = product.specialPrice || product.price;
   const hasDiscount = product.discount > 0;
   const unitsSold = product.unitsSold ?? 0;
-
-  useEffect(() => {
-    if (!product) return;
-    try {
-      const entry = {
-        productId: product.productId,
-        productName: product.productName,
-        image: product.image,
-        price: Number(finalPrice),
-      };
-      const key = "recently_viewed_products";
-      const existing = JSON.parse(localStorage.getItem(key) || "[]")
-        .filter((item) => item.productId !== entry.productId);
-      existing.unshift(entry);
-      localStorage.setItem(key, JSON.stringify(existing.slice(0, 12)));
-    } catch (storageError) {
-      console.error("Failed to persist recently viewed products", storageError);
-    }
-  }, [product?.productId, finalPrice, product]);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">

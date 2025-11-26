@@ -87,8 +87,9 @@ npm run dev
 
 4. **Run FastAPI**
    ```powershell
-   cd recommendation-systems-rule-base
-   (.venv) uvicorn backend.main:app --reload
+ PS E:\Pj1>    .\.venv\Scripts\activate
+(.venv) PS E:\Pj1> cd recommendation-systems-rule-base  
+(.venv) PS E:\Pj1\recommendation-systems-rule-base>    uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
    ```
 
    - Swagger docs: `http://127.0.0.1:8000/docs`
