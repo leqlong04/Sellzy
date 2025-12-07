@@ -11,8 +11,8 @@ public class ProductSalesSummary {
     private Long productId;
     private String productName;
     private Long quantitySold;
-    private Double revenue; // Revenue before tax
-    private Double taxAmount; // Tax paid for this product
-    private Double revenueAfterTax; // Revenue after tax
+    private Double revenue; // Revenue before any deductions
+    private Double platformFee; // Platform fee (5%)
+    private Double stateTax; // State tax (7% if applicable)
+    private Double revenueAfterFees; // Revenue after platform fee and state tax
 }
-

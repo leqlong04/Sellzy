@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import DashboardOverview from './DashboardOverview'
-import { FaBoxOpen, FaDollarSign, FaShoppingCart } from 'react-icons/fa';
+import { FaBoxOpen, FaDollarSign, FaShoppingCart, FaMoneyBillWave } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { analyticsAction } from '../../../store/actions';
 import Loader from '../../shared/Loader';
@@ -12,7 +12,7 @@ const Dashboard = () => {
     const { isLoading, errorMessage } = useSelector((state) => state.errors);
 
     const {
-        analytics: { productCount, totalRevenue, totalOrders }
+        analytics: { productCount, totalRevenue, totalOrders, totalStateTax }
     } = useSelector((state) => state.admin);
 
     useEffect(() => {
@@ -46,6 +46,13 @@ const Dashboard = () => {
                 title="Total Revenue"
                 amount={totalRevenue}
                 Icon={FaDollarSign}
+                revenue
+            />
+
+            <DashboardOverview
+                title="State Tax (7%)"
+                amount={totalStateTax || 0}
+                Icon={FaMoneyBillWave}
                 revenue
             />
         </div>

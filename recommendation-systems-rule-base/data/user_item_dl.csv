@@ -4,6 +4,7 @@ user_id,product_id,product_name
 21,358,apple airpods pro 2
 22,355,samsung galaxy watch 6
 21,2,wireless earbuds pro
+22,652,iphone 17 pro max
 12,1,nokia x100 smartwatch
 1,2,wireless earbuds pro
 1,356,xiaomi watch s1 active
@@ -12,4 +13,5 @@ user_id,product_id,product_name
 22,356,xiaomi watch s1 active
 22,357,sony wh-1000xm5
 1,352,asus tuf gaming f15
+22,358,apple airpods pro 2
 1,452,"acer nitro 17 nvidia rtx 4060, 16gb, 17.3"" qhd 165hz, intel i7-13700h gaming laptop"

@@ -45,6 +45,8 @@ const SellerStatistics = () => {
     );
   }
 
+  const hasStateTax = statistics.totalRevenue > 4000;
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       <div>
@@ -68,27 +70,42 @@ const SellerStatistics = () => {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-          <div className="text-sm text-slate-600 mb-1">Total Revenue (Before Tax)</div>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm md:col-span-2">
+          <div className="text-sm text-slate-600 mb-1">Total Revenue (Before Fees)</div>
           <div className="text-3xl font-bold text-slate-900">
             ${(statistics.totalRevenue || 0).toFixed(2)}
           </div>
         </div>
 
-        <div className="bg-white border border-amber-200 rounded-xl p-6 shadow-sm bg-amber-50">
-          <div className="text-sm text-amber-700 mb-1">Total Tax Paid (7%)</div>
-          <div className="text-3xl font-bold text-amber-700">
-            ${(statistics.totalTaxPaid || 0).toFixed(2)}
+        <div className="bg-white border border-purple-200 rounded-xl p-6 shadow-sm bg-purple-50">
+          <div className="text-sm text-purple-700 mb-1">Platform Fee (5%)</div>
+          <div className="text-3xl font-bold text-purple-700">
+            ${(statistics.totalPlatformFee || 0).toFixed(2)}
           </div>
         </div>
 
-        <div className="bg-white border border-green-200 rounded-xl p-6 shadow-sm bg-green-50 md:col-span-2 lg:col-span-4">
-          <div className="text-sm text-green-700 mb-1">Total Revenue After Tax</div>
+        <div className="bg-white border border-amber-200 rounded-xl p-6 shadow-sm bg-amber-50">
+          <div className="text-sm text-amber-700 mb-1">
+            State Tax (7%)
+            {!hasStateTax && <span className="ml-2 text-xs">(Not applicable)</span>}
+          </div>
+          <div className="text-3xl font-bold text-amber-700">
+            ${(statistics.totalStateTax || 0).toFixed(2)}
+          </div>
+          {!hasStateTax && (
+            <div className="text-xs text-amber-600 mt-2">
+              Tax applies when revenue exceeds $4,000
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white border border-green-200 rounded-xl p-6 shadow-sm bg-green-50 md:col-span-2">
+          <div className="text-sm text-green-700 mb-1">Net Revenue (After All Fees)</div>
           <div className="text-4xl font-bold text-green-700">
-            ${(statistics.totalRevenueAfterTax || 0).toFixed(2)}
+            ${(statistics.totalRevenueAfterFees || 0).toFixed(2)}
           </div>
           <div className="text-xs text-green-600 mt-2">
-            This is the amount you will receive after tax deduction
+            This is the amount you will receive after platform fee and tax deduction
           </div>
         </div>
       </div>
@@ -112,11 +129,14 @@ const SellerStatistics = () => {
                   <th className="text-right py-3 px-4 text-sm font-semibold text-slate-700">
                     Revenue
                   </th>
-                  <th className="text-right py-3 px-4 text-sm font-semibold text-slate-700">
-                    Tax Paid
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-purple-700">
+                    Platform Fee
+                  </th>
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-amber-700">
+                    State Tax
                   </th>
                   <th className="text-right py-3 px-4 text-sm font-semibold text-green-700">
-                    Revenue After Tax
+                    Net Revenue
                   </th>
                 </tr>
               </thead>
@@ -132,11 +152,14 @@ const SellerStatistics = () => {
                     <td className="py-3 px-4 text-sm text-right text-slate-600">
                       ${(product.revenue || 0).toFixed(2)}
                     </td>
+                    <td className="py-3 px-4 text-sm text-right text-purple-600">
+                      ${(product.platformFee || 0).toFixed(2)}
+                    </td>
                     <td className="py-3 px-4 text-sm text-right text-amber-600">
-                      ${(product.taxAmount || 0).toFixed(2)}
+                      ${(product.stateTax || 0).toFixed(2)}
                     </td>
                     <td className="py-3 px-4 text-sm text-right font-semibold text-green-700">
-                      ${(product.revenueAfterTax || 0).toFixed(2)}
+                      ${(product.revenueAfterFees || 0).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -173,11 +196,14 @@ const SellerStatistics = () => {
                   <div className="text-sm text-slate-600">
                     Revenue: <span className="font-semibold">${(month.revenue || 0).toFixed(2)}</span>
                   </div>
+                  <div className="text-xs text-purple-600">
+                    Platform Fee: ${(month.platformFee || 0).toFixed(2)}
+                  </div>
                   <div className="text-xs text-amber-600">
-                    Tax: ${(month.taxAmount || 0).toFixed(2)}
+                    State Tax: ${(month.stateTax || 0).toFixed(2)}
                   </div>
                   <div className="text-sm font-semibold text-green-700 mt-1">
-                    After Tax: ${(month.revenueAfterTax || 0).toFixed(2)}
+                    Net: ${(month.revenueAfterFees || 0).toFixed(2)}
                   </div>
                 </div>
               </div>
@@ -190,4 +216,3 @@ const SellerStatistics = () => {
 };
 
 export default SellerStatistics;
-

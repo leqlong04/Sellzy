@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 @Service
 public class SellerStatisticsServiceImpl implements SellerStatisticsService {
 
+    private static final double PLATFORM_FEE_RATE = 0.05; // 5% platform fee
+    private static final double STATE_TAX_RATE = 0.07; // 7% state tax
+    private static final double STATE_TAX_THRESHOLD = 4000.0; // $4000 threshold for state tax
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -48,11 +52,34 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
         // Calculate statistics
         long totalProductsSold = 0;
         double totalRevenue = 0.0;
-        double totalTaxPaid = 0.0;
         
         Map<Long, ProductSalesData> productSalesMap = new HashMap<>();
         Map<String, MonthlyRevenueData> monthlyRevenueMap = new HashMap<>();
         
+        // First pass: Calculate total revenue to determine if state tax applies
+        for (Order order : sellerOrders) {
+            for (OrderItem item : order.getOrderItems()) {
+                Product product = item.getProduct();
+                if (product == null || product.getUser() == null || 
+                    !product.getUser().getUserId().equals(seller.getUserId())) {
+                    continue;
+                }
+                
+                double itemRevenue = item.getOrderProductPrice() * item.getQuantity();
+                totalRevenue += itemRevenue;
+                totalProductsSold += item.getQuantity();
+            }
+        }
+        
+        // Determine if state tax applies based on total revenue
+        boolean applyStateTax = totalRevenue > STATE_TAX_THRESHOLD;
+        
+        // Calculate fees
+        double totalPlatformFee = totalRevenue * PLATFORM_FEE_RATE;
+        double totalStateTax = applyStateTax ? totalRevenue * STATE_TAX_RATE : 0.0;
+        double totalRevenueAfterFees = totalRevenue - totalPlatformFee - totalStateTax;
+        
+        // Second pass: Build detailed statistics with per-item fee calculations
         for (Order order : sellerOrders) {
             String monthKey = order.getOrderDate() != null 
                     ? order.getOrderDate().format(DateTimeFormatter.ofPattern("yyyy-MM"))
@@ -69,14 +96,11 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
                     continue;
                 }
                 
-                // Calculate revenue and tax for this item
+                // Calculate revenue and fees for this item
                 double itemRevenue = item.getOrderProductPrice() * item.getQuantity();
-                double itemTax = item.getTaxAmount() != null ? item.getTaxAmount() : itemRevenue * 0.07;
-                double itemRevenueAfterTax = itemRevenue - itemTax; // Seller receives revenue after tax
-                
-                totalProductsSold += item.getQuantity();
-                totalRevenue += itemRevenue;
-                totalTaxPaid += itemTax;
+                double itemPlatformFee = itemRevenue * PLATFORM_FEE_RATE;
+                double itemStateTax = applyStateTax ? itemRevenue * STATE_TAX_RATE : 0.0;
+                double itemRevenueAfterFees = itemRevenue - itemPlatformFee - itemStateTax;
                 
                 // Aggregate by product
                 ProductSalesData productData = productSalesMap.computeIfAbsent(
@@ -84,13 +108,15 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
                         k -> new ProductSalesData(product.getProductId(), product.getProductName()));
                 productData.quantitySold += item.getQuantity();
                 productData.revenue += itemRevenue;
-                productData.taxAmount += itemTax;
-                productData.revenueAfterTax += itemRevenueAfterTax;
+                productData.platformFee += itemPlatformFee;
+                productData.stateTax += itemStateTax;
+                productData.revenueAfterFees += itemRevenueAfterFees;
                 
                 // Aggregate by month
                 monthData.revenue += itemRevenue;
-                monthData.taxAmount += itemTax;
-                monthData.revenueAfterTax += itemRevenueAfterTax;
+                monthData.platformFee += itemPlatformFee;
+                monthData.stateTax += itemStateTax;
+                monthData.revenueAfterFees += itemRevenueAfterFees;
             }
         }
         
@@ -103,8 +129,9 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
                         data.productName,
                         data.quantitySold,
                         data.revenue,
-                        data.taxAmount,
-                        data.revenueAfterTax))
+                        data.platformFee,
+                        data.stateTax,
+                        data.revenueAfterFees))
                 .collect(Collectors.toList());
         
         // Build monthly revenue
@@ -118,20 +145,20 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
                             Integer.parseInt(parts[0]),
                             Integer.parseInt(parts[1]),
                             data.revenue,
-                            data.taxAmount,
-                            data.revenueAfterTax,
+                            data.platformFee,
+                            data.stateTax,
+                            data.revenueAfterFees,
                             data.orderCount);
                 })
                 .collect(Collectors.toList());
-        
-        double totalRevenueAfterTax = totalRevenue - totalTaxPaid;
         
         return new SellerStatisticsResponse(
                 totalProductsSold,
                 sellerOrders.size(),
                 totalRevenue,
-                totalTaxPaid,
-                totalRevenueAfterTax,
+                totalPlatformFee,
+                totalStateTax,
+                totalRevenueAfterFees,
                 topSellingProducts,
                 monthlyRevenue
         );
@@ -143,8 +170,9 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
         String productName;
         long quantitySold = 0;
         double revenue = 0.0;
-        double taxAmount = 0.0;
-        double revenueAfterTax = 0.0;
+        double platformFee = 0.0;
+        double stateTax = 0.0;
+        double revenueAfterFees = 0.0;
         
         ProductSalesData(Long productId, String productName) {
             this.productId = productId;
@@ -155,8 +183,9 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
     private static class MonthlyRevenueData {
         String monthKey;
         double revenue = 0.0;
-        double taxAmount = 0.0;
-        double revenueAfterTax = 0.0;
+        double platformFee = 0.0;
+        double stateTax = 0.0;
+        double revenueAfterFees = 0.0;
         int orderCount = 0;
         
         MonthlyRevenueData(String monthKey) {
@@ -168,4 +197,3 @@ public class SellerStatisticsServiceImpl implements SellerStatisticsService {
         }
     }
 }
-

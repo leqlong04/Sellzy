@@ -1,95 +1,94 @@
 antecedent,consequent,support,confidence,lift
-['acer nitro 17 nvidia rtx 4060'],intel i7-13700h gaming laptop,0.076923,1.0,13.0
-['intel i7-13700h gaming laptop'],acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-['acer nitro 17 nvidia rtx 4060'],"17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-['intel i7-13700h gaming laptop'],"17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz']",16gb,0.076923,1.0,13.0
-['16gb'],"17.3"" qhd 165hz",0.076923,1.0,13.0
-['acer nitro 17 nvidia rtx 4060'],16gb,0.076923,1.0,13.0
-['16gb'],acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-['intel i7-13700h gaming laptop'],16gb,0.076923,1.0,13.0
-['16gb'],intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",16gb,0.076923,1.0,13.0
-"['16gb', 'acer nitro 17 nvidia rtx 4060']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",16gb,0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['16gb', 'intel i7-13700h gaming laptop']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",16gb,0.076923,1.0,13.0
-"['16gb', 'acer nitro 17 nvidia rtx 4060']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['16gb', 'intel i7-13700h gaming laptop']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",16gb,0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['16gb', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['16gb', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['16gb', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.076923,1.0,13.0
-"['16gb', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.076923,1.0,13.0
-"['16gb', '17.3"" qhd 165hz', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.076923,1.0,13.0
-['samsung galaxy watch 6'],sony wh-1000xm5,0.076923,1.0,13.0
-['sony wh-1000xm5'],samsung galaxy watch 6,0.076923,1.0,13.0
-"['samsung galaxy watch 6', 'xiaomi watch s1 active']",sony wh-1000xm5,0.076923,1.0,13.0
-"['sony wh-1000xm5', 'xiaomi watch s1 active']",samsung galaxy watch 6,0.076923,1.0,13.0
-"['nokia x100 smartwatch', 'wireless earbuds pro']",rog zephyrus gx501,0.076923,1.0,6.5
-['intel i7-13700h gaming laptop'],xiaomi watch s1 active,0.076923,1.0,6.5
-['acer nitro 17 nvidia rtx 4060'],xiaomi watch s1 active,0.076923,1.0,6.5
-"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['17.3"" qhd 165hz']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-['16gb'],xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', '17.3"" qhd 165hz']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', 'acer nitro 17 nvidia rtx 4060']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', '17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.076923,1.0,6.5
-['sony wh-1000xm5'],xiaomi watch s1 active,0.076923,1.0,6.5
-['samsung galaxy watch 6'],xiaomi watch s1 active,0.076923,1.0,6.5
-"['samsung galaxy watch 6', 'sony wh-1000xm5']",xiaomi watch s1 active,0.076923,1.0,6.5
-"['nokia x100 smartwatch', 'rog zephyrus gx501']",wireless earbuds pro,0.076923,1.0,3.25
-['apple airpods pro 2'],wireless earbuds pro,0.076923,1.0,3.25
-"['rog zephyrus gx501', 'wireless earbuds pro']",nokia x100 smartwatch,0.076923,1.0,2.166667
-['asus tuf gaming f15'],nokia x100 smartwatch,0.076923,1.0,2.166667
-['xiaomi watch s1 active'],intel i7-13700h gaming laptop,0.076923,0.5,6.5
-['xiaomi watch s1 active'],acer nitro 17 nvidia rtx 4060,0.076923,0.5,6.5
-['xiaomi watch s1 active'],"17.3"" qhd 165hz",0.076923,0.5,6.5
-['xiaomi watch s1 active'],16gb,0.076923,0.5,6.5
-['xiaomi watch s1 active'],sony wh-1000xm5,0.076923,0.5,6.5
-['xiaomi watch s1 active'],samsung galaxy watch 6,0.076923,0.5,6.5
-['rog zephyrus gx501'],wireless earbuds pro,0.076923,0.5,1.625
-['rog zephyrus gx501'],nokia x100 smartwatch,0.076923,0.5,1.083333
-['wireless earbuds pro'],apple airpods pro 2,0.076923,0.25,3.25
-['wireless earbuds pro'],rog zephyrus gx501,0.076923,0.25,1.625
-['wireless earbuds pro'],nokia x100 smartwatch,0.076923,0.25,0.541667
+['acer nitro 17 nvidia rtx 4060'],intel i7-13700h gaming laptop,0.058824,1.0,17.0
+['intel i7-13700h gaming laptop'],acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+['acer nitro 17 nvidia rtx 4060'],"17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['17.3"" qhd 165hz']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+['intel i7-13700h gaming laptop'],"17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+['16gb'],"17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz']",16gb,0.058824,1.0,17.0
+['16gb'],acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+['acer nitro 17 nvidia rtx 4060'],16gb,0.058824,1.0,17.0
+['16gb'],intel i7-13700h gaming laptop,0.058824,1.0,17.0
+['intel i7-13700h gaming laptop'],16gb,0.058824,1.0,17.0
+"['16gb', 'acer nitro 17 nvidia rtx 4060']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",16gb,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['16gb', 'intel i7-13700h gaming laptop']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",16gb,0.058824,1.0,17.0
+"['16gb', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+"['16gb', 'acer nitro 17 nvidia rtx 4060']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['16gb', 'intel i7-13700h gaming laptop']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",16gb,0.058824,1.0,17.0
+"['16gb', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+"['16gb', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['16gb', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",16gb,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['16gb', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['16gb', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+"['16gb', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['16gb', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+"['16gb', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']","17.3"" qhd 165hz",0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'xiaomi watch s1 active']",intel i7-13700h gaming laptop,0.058824,1.0,17.0
+"['16gb', '17.3"" qhd 165hz', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",acer nitro 17 nvidia rtx 4060,0.058824,1.0,17.0
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop', 'xiaomi watch s1 active']",16gb,0.058824,1.0,17.0
+['samsung galaxy watch 6'],sony wh-1000xm5,0.058824,1.0,17.0
+['sony wh-1000xm5'],samsung galaxy watch 6,0.058824,1.0,17.0
+"['samsung galaxy watch 6', 'xiaomi watch s1 active']",sony wh-1000xm5,0.058824,1.0,17.0
+"['sony wh-1000xm5', 'xiaomi watch s1 active']",samsung galaxy watch 6,0.058824,1.0,17.0
+"['nokia x100 smartwatch', 'wireless earbuds pro']",rog zephyrus gx501,0.058824,1.0,8.5
+['intel i7-13700h gaming laptop'],xiaomi watch s1 active,0.058824,1.0,8.5
+['acer nitro 17 nvidia rtx 4060'],xiaomi watch s1 active,0.058824,1.0,8.5
+"['acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['17.3"" qhd 165hz']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+['16gb'],xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', '17.3"" qhd 165hz']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', 'acer nitro 17 nvidia rtx 4060']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', '17.3"" qhd 165hz', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['16gb', '17.3"" qhd 165hz', 'acer nitro 17 nvidia rtx 4060', 'intel i7-13700h gaming laptop']",xiaomi watch s1 active,0.058824,1.0,8.5
+['sony wh-1000xm5'],xiaomi watch s1 active,0.058824,1.0,8.5
+['samsung galaxy watch 6'],xiaomi watch s1 active,0.058824,1.0,8.5
+"['samsung galaxy watch 6', 'sony wh-1000xm5']",xiaomi watch s1 active,0.058824,1.0,8.5
+"['nokia x100 smartwatch', 'rog zephyrus gx501']",wireless earbuds pro,0.058824,1.0,3.4
+"['rog zephyrus gx501', 'wireless earbuds pro']",nokia x100 smartwatch,0.058824,1.0,2.833333
+['asus tuf gaming f15'],nokia x100 smartwatch,0.058824,1.0,2.833333
+['xiaomi watch s1 active'],intel i7-13700h gaming laptop,0.058824,0.5,8.5
+['xiaomi watch s1 active'],acer nitro 17 nvidia rtx 4060,0.058824,0.5,8.5
+['xiaomi watch s1 active'],"17.3"" qhd 165hz",0.058824,0.5,8.5
+['xiaomi watch s1 active'],16gb,0.058824,0.5,8.5
+['xiaomi watch s1 active'],sony wh-1000xm5,0.058824,0.5,8.5
+['xiaomi watch s1 active'],samsung galaxy watch 6,0.058824,0.5,8.5
+['apple airpods pro 2'],iphone 17 pro max,0.058824,0.5,2.833333
+['rog zephyrus gx501'],wireless earbuds pro,0.058824,0.5,1.7
+['apple airpods pro 2'],wireless earbuds pro,0.058824,0.5,1.7
+['rog zephyrus gx501'],nokia x100 smartwatch,0.058824,0.5,1.416667
+['iphone 17 pro max'],apple airpods pro 2,0.058824,0.333333,2.833333

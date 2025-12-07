@@ -23,11 +23,6 @@ const RecommendationCard = ({ item }) => {
             ${Number(item.price).toFixed(2)}
           </p>
         )}
-        {item.score !== null && item.score !== undefined && (
-          <p className="text-xs text-slate-500">
-            Confidence {(item.score * 100).toFixed(0)}%
-          </p>
-        )}
       </div>
     </div>
   );

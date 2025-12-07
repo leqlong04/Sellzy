@@ -11,4 +11,5 @@ public class AnalyticsResponse {
     private String productCount;
     private String totalRevenue;
     private String totalOrders;
+    private String totalStateTax; // Total state tax collected (7% from sellers with revenue > $4000)
 }
