@@ -18,22 +18,40 @@ export default function Page() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const selectedCategories = searchParams.get("categories")?.split(",") || [];
+        const category = searchParams.get("category") || "";
         const currentPage = searchParams.get("page") || "1";
         const keyword = searchParams.get("search") || "";
+        const minPrice = searchParams.get("minPrice") || "";
+        const maxPrice = searchParams.get("maxPrice") || "";
+        const inStock = searchParams.get("inStock") || "";
+        const onSale = searchParams.get("onSale") || "";
 
         const queryParams = new URLSearchParams();
         queryParams.set("pageNumber", (parseInt(currentPage) - 1).toString());
         queryParams.set("pageSize", "10");
+        
         if (keyword) {
             queryParams.set("keyword", keyword);
+        }
+        if (minPrice) {
+            queryParams.set("minPrice", minPrice);
+        }
+        if (maxPrice) {
+            queryParams.set("maxPrice", maxPrice);
+        }
+        if (inStock === "true") {
+            queryParams.set("inStock", "true");
+        }
+        if (onSale === "true") {
+            queryParams.set("onSale", "true");
         }
 
         const queryString = queryParams.toString();
 
-        if (selectedCategories.length > 0 && categories) {
+        // Handle category filter
+        if (category && categories) {
             const selectedCategory = categories.find(
-                cat => cat.categoryName === selectedCategories[0]
+                cat => cat.categoryName === category
             );
 
             if (selectedCategory) {
