@@ -40,6 +40,8 @@ public class Order {
     private Payment payment;
 
     private Double totalAmount;
+    private Double taxAmount; // Total tax for the order (7% of subtotal)
+    private Double totalAmountAfterTax; // totalAmount + taxAmount
     private String orderStatus;
 
     @ManyToOne

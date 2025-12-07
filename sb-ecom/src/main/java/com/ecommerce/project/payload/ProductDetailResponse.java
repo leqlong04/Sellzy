@@ -10,6 +10,7 @@ public class ProductDetailResponse {
     String productName;
     String image;
     String description;
+    String detailDescription; // Rich text HTML description
     Integer quantity;
     double price;
     double discount;

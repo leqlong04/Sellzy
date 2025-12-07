@@ -44,3 +44,81 @@
         border-color: var(--color-gray-200, currentcolor);
     }
 }
+
+/* Rich text editor styles */
+.ql-editor {
+    min-height: 300px;
+}
+
+.ql-editor img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+.ql-editor p {
+    margin-bottom: 1em;
+}
+
+.ql-editor h1, .ql-editor h2, .ql-editor h3 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.ql-editor ul, .ql-editor ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* Product detail description styles */
+.prose {
+    color: #475569;
+}
+
+.prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1em 0;
+}
+
+.prose p {
+    margin-bottom: 1em;
+    line-height: 1.75;
+}
+
+.prose h1, .prose h2, .prose h3 {
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    color: #1e293b;
+}
+
+.prose h1 {
+    font-size: 1.875rem;
+}
+
+.prose h2 {
+    font-size: 1.5rem;
+}
+
+.prose h3 {
+    font-size: 1.25rem;
+}
+
+.prose ul, .prose ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+.prose a {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+.prose a:hover {
+    color: #2563eb;
+}

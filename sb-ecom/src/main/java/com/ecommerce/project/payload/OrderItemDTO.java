@@ -13,4 +13,6 @@ public class OrderItemDTO {
     private Integer quantity;
     private double discount;
     private double orderedProductPrice;
+    private Double taxAmount; // Tax for this item (7% of orderedProductPrice * quantity)
+    private Double itemTotalAfterTax; // (orderedProductPrice * quantity) + taxAmount
 }

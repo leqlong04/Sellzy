@@ -14,3 +14,7 @@ export const fetchSellerProducts = async (sellerId, page = 0, size = 12) => {
   return response.data;
 };
 
+export const fetchSellerStatistics = async () => {
+  const response = await api.get("/seller/statistics");
+  return response.data;
+};

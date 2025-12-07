@@ -28,6 +28,10 @@ public class Product {
     @NotBlank
     @Size(min = 6, message="Description must contain atleast 6 characters")
     private String description;
+    
+    @Column(name = "detail_description", columnDefinition = "TEXT")
+    private String detailDescription; // Rich text HTML description with images
+    
     private Integer quantity;
     private double price;
     private double discount;

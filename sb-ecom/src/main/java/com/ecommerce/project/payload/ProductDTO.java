@@ -12,6 +12,7 @@ public class ProductDTO {
     private String productName;
     private String image;
     private String description;
+    private String detailDescription; // Rich text HTML description
     private Integer quantity;
     private double price;
     private double discount;
@@ -19,6 +20,7 @@ public class ProductDTO {
     private Double averageRating;
     private Integer ratingCount;
     private String sellerName;
-
+    private Double taxAmount; // 7% tax on specialPrice
+    private Double priceAfterTax; // specialPrice + taxAmount
 
 }

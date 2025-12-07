@@ -28,4 +28,6 @@ public class OrderItem {
     private Integer quantity;
     private double discount;
     private double orderProductPrice;
+    private Double taxAmount; // Tax for this item (7% of orderProductPrice)
+    private Double itemTotalAfterTax; // orderProductPrice * quantity + taxAmount
 }

@@ -51,6 +51,7 @@ const AdminProducts = () => {
             id: item.productId,
             productName: item.productName,
             description: item.description,
+            detailDescription: item.detailDescription || '',
             discount: item.discount,
             image: item.image,
             price: item.price,
@@ -157,13 +158,35 @@ const AdminProducts = () => {
             )}
 
             <Modal
+                key={`product-modal-${openUpdateModal ? 'update' : 'add'}-${selectedProduct?.id || 'new'}`}
                 open={openUpdateModal || openAddModal}
-                setOpen={openUpdateModal ? setOpenUpdateModal : setOpenAddModal}
+                setOpen={(open) => {
+                    if (openUpdateModal) {
+                        setOpenUpdateModal(open);
+                    } else {
+                        setOpenAddModal(open);
+                    }
+                    if (!open) {
+                        // Reset selected product when modal closes
+                        setTimeout(() => setSelectedProduct(''), 100);
+                    }
+                }}
                 title={openUpdateModal ? "Update Product" : "Add Product"}>
                 <AddProductForm
-                    setOpen={openUpdateModal ? setOpenUpdateModal : setOpenAddModal}
+                    setOpen={(open) => {
+                        if (openUpdateModal) {
+                            setOpenUpdateModal(open);
+                        } else {
+                            setOpenAddModal(open);
+                        }
+                        if (!open) {
+                            // Reset selected product when modal closes
+                            setTimeout(() => setSelectedProduct(''), 100);
+                        }
+                    }}
                     product={selectedProduct}
                     update={openUpdateModal}
+                    isOpen={openUpdateModal || openAddModal}
                 />
             </Modal>
 

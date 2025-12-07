@@ -10,6 +10,7 @@ import {
 import getImageUrl from "../../utils/getImageUrl";
 import { addToCart } from "../../store/actions";
 import ProductRecommendations from "./ProductRecommendations";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -21,6 +22,7 @@ const ProductDetail = () => {
   const [recommendationsError, setRecommendationsError] = useState(null);
   const [recommendationsFallback, setRecommendationsFallback] = useState(false);
   const [recommendationsVersion, setRecommendationsVersion] = useState(0);
+  const [isDetailExpanded, setIsDetailExpanded] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -219,6 +221,68 @@ const ProductDetail = () => {
                 {product.description}
               </p>
             </div>
+
+            {product.detailDescription && (
+              <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-slate-900">
+                    Product Details
+                  </h2>
+                </div>
+                
+                <div className="relative">
+                  {/* Preview (collapsed) */}
+                  {!isDetailExpanded && (
+                    <div className="relative">
+                      <div 
+                        className="text-sm leading-relaxed text-slate-600 prose prose-sm max-w-none overflow-hidden relative"
+                        style={{
+                          maxHeight: '400px',
+                          wordBreak: 'break-word'
+                        }}
+                        dangerouslySetInnerHTML={{ __html: product.detailDescription }}
+                      />
+                      {/* Gradient overlay for fade effect */}
+                      <div 
+                        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+                        style={{
+                          background: 'linear-gradient(to bottom, transparent 0%, white 100%)'
+                        }}
+                      />
+                    </div>
+                  )}
+                  
+                  {/* Full content (expanded) */}
+                  {isDetailExpanded && (
+                    <div 
+                      className="text-sm leading-relaxed text-slate-600 prose prose-sm max-w-none"
+                      style={{
+                        wordBreak: 'break-word'
+                      }}
+                      dangerouslySetInnerHTML={{ __html: product.detailDescription }}
+                    />
+                  )}
+                </div>
+                
+                {/* Toggle button */}
+                <button
+                  onClick={() => setIsDetailExpanded(!isDetailExpanded)}
+                  className="flex items-center justify-center gap-2 w-full py-3 text-sm font-semibold text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300 rounded-lg transition-colors bg-blue-50 hover:bg-blue-100 mt-2"
+                >
+                  {isDetailExpanded ? (
+                    <>
+                      <span>Thu gọn</span>
+                      <FaChevronUp className="text-xs" />
+                    </>
+                  ) : (
+                    <>
+                      <span>Xem thêm chi tiết sản phẩm</span>
+                      <FaChevronDown className="text-xs" />
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
 
             <div className="bg-slate-100 rounded-2xl px-4 py-4 space-y-1">
               <p className="text-sm font-semibold text-slate-700">

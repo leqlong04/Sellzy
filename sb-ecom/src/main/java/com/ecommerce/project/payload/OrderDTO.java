@@ -17,6 +17,8 @@ public class OrderDTO {
     private LocalDate orderDate;
     private PaymentDTO payment;
     private Double totalAmount;
+    private Double taxAmount; // Total tax for the order (7% of subtotal)
+    private Double totalAmountAfterTax; // totalAmount + taxAmount
     private String orderStatus;
     private Long addressId;
 

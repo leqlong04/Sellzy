@@ -21,6 +21,7 @@ import ChatWidget from './components/chat/ChatWidget.jsx'
 import SellerProfile from './components/seller/SellerProfile.jsx'
 import SellerInbox from './components/seller/SellerInbox.jsx'
 import SellerDirectory from './components/seller/SellerDirectory.jsx'
+import SellerStatistics from './components/seller/SellerStatistics.jsx'
 import ProfilePage from './components/profile/ProfilePage.jsx'
 import OrderHistory from './components/orders/OrderHistory.jsx'
 import OrderDetail from './components/orders/OrderDetail.jsx'
@@ -61,6 +62,7 @@ const AppContent = () => {
             <Route path='orders' element={<Orders />} />
             <Route path='categories' element={<Category />} />
             <Route path='messages' element={<SellerInbox />} />
+            <Route path='statistics' element={<SellerStatistics />} />
           </Route>
         </Route>
       </Routes>

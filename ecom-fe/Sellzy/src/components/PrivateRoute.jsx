@@ -24,7 +24,7 @@ const PrivateRoute = ({ publicPage = false, adminOnly = false }) => {
     }
 
     if (isSeller) {
-      const sellerAllowedPaths = ["/admin/orders", "/admin/products", "/admin/messages"];
+      const sellerAllowedPaths = ["/admin/orders", "/admin/products", "/admin/messages", "/admin/statistics"];
       const sellerAllowed = sellerAllowedPaths.some((path) =>
         location.pathname.startsWith(path)
       );

@@ -6,7 +6,6 @@ import com.ecommerce.project.model.*;
 import com.ecommerce.project.payload.OrderDTO;
 import com.ecommerce.project.payload.OrderItemDTO;
 import com.ecommerce.project.payload.OrderResponse;
-import com.ecommerce.project.payload.ProductResponse;
 import com.ecommerce.project.repositories.*;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.transaction.Transactional;
@@ -87,17 +86,38 @@ public class OrderServiceImpl implements  OrderService{
         }
 
         List<OrderItem> orderItems = new ArrayList<>();
+        double orderSubtotal = 0.0;
+        
         for(CartItem cartItem : cartItems){
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setDiscount(cartItem.getDiscount());
             orderItem.setOrderProductPrice(cartItem.getProductPrice());
+            
+            // Calculate tax for this item (7% of product price)
+            double itemSubtotal = cartItem.getProductPrice() * cartItem.getQuantity();
+            double itemTax = itemSubtotal * 0.07;
+            double itemTotalAfterTax = itemSubtotal + itemTax;
+            
+            orderItem.setTaxAmount(itemTax);
+            orderItem.setItemTotalAfterTax(itemTotalAfterTax);
             orderItem.setOrder(savedOrder);
+            
             orderItems.add(orderItem);
+            orderSubtotal += itemSubtotal;
         }
 
         orderItems = orderItemRepository.saveAll(orderItems);
+        
+        // Calculate total tax and total after tax for the order
+        double totalTax = orderSubtotal * 0.07;
+        double totalAfterTax = orderSubtotal + totalTax;
+        
+        savedOrder.setTaxAmount(totalTax);
+        savedOrder.setTotalAmountAfterTax(totalAfterTax);
+        savedOrder.setTotalAmount(orderSubtotal); // Keep subtotal in totalAmount
+        savedOrder = orderRepository.save(savedOrder);
 
         //update product stock
         cart.getCartItems().forEach(item -> {

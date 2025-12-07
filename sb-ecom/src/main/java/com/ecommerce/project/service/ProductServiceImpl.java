@@ -83,7 +83,9 @@ public class ProductServiceImpl implements ProductService {
                     ((product.getDiscount() * 0.01) * product.getPrice());
             product.setSpecialPrice(specialPrice);
             Product savedProduct = productRepository.save(product);
-            return mapProductToDto(savedProduct);
+            ProductDTO result = mapProductToDto(savedProduct);
+            // Tax is already calculated in mapProductToDto
+            return result;
         }
         else {
             throw new APIException("Product already exist");
@@ -199,6 +201,7 @@ public class ProductServiceImpl implements ProductService {
        //updaate
         productFromDb.setProductName(product.getProductName());
         productFromDb.setDescription(product.getDescription());
+        productFromDb.setDetailDescription(product.getDetailDescription());
         productFromDb.setQuantity(product.getQuantity());
         productFromDb.setDiscount(product.getDiscount());
         productFromDb.setPrice(product.getPrice());
@@ -206,6 +209,7 @@ public class ProductServiceImpl implements ProductService {
                 ((product.getDiscount() * 0.01) * product.getPrice()));
 
         Product savedProduct = productRepository.save(productFromDb);
+        // Tax will be calculated in mapProductToDto
 
         List<Cart> carts = cartRepository.findCartsByProductId(productId);
 
@@ -309,6 +313,14 @@ public class ProductServiceImpl implements ProductService {
         dto.setRatingCount(product.getRatingCount() != null ? product.getRatingCount() : 0);
         User owner = product.getUser();
         dto.setSellerName(owner != null ? owner.getUserName() : null);
+        
+        // Calculate tax (7% on specialPrice)
+        double specialPrice = product.getSpecialPrice() != 0 ? product.getSpecialPrice() : product.getPrice();
+        double taxAmount = specialPrice * 0.07;
+        double priceAfterTax = specialPrice + taxAmount;
+        dto.setTaxAmount(taxAmount);
+        dto.setPriceAfterTax(priceAfterTax);
+        
         return dto;
     }
 
@@ -325,6 +337,7 @@ public class ProductServiceImpl implements ProductService {
                 .productId(product.getProductId())
                 .productName(product.getProductName())
                 .description(product.getDescription())
+                .detailDescription(product.getDetailDescription())
                 .quantity(product.getQuantity())
                 .price(product.getPrice())
                 .discount(product.getDiscount())
